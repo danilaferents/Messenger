@@ -45,7 +45,7 @@
 				</div>
 			</div>
 			<div class="messages">
-				<div class="all-messages">
+				<div class="all-messages" id="all-messages">
 					<div class="msg-back"><div class="msg">
 						<div class="avatar"><img src="pics/dima.jpg"></div>
 						<div class="msg-text">
@@ -98,7 +98,7 @@
 						<div class="avatar" style="height: 0;"><img src="pics/dan.jpg"></div>
 						<div class="msg-text">
 							<div class="username" style="color: lightblue;display: none;">Danila Beast</div>
-							<div class="msg-content">но</div>
+					SendMessage()		<div class="msg-content">но</div>
 						</div>
 						<div class="msg-date"><p>12:00:00 AM</p></div>
 					</div></div>
@@ -234,8 +234,8 @@
 				<div class="write-message">
 					<div class="write-block">
 						<div class="author-avatar"><img src="pics/dan.jpg"></div>
-						<div class="write-form" data-placeholder="Написать сообщение..." contenteditable="true"></div>
-						<div class="send-button-parent"><button class="send-button-child">Send</button></div>
+						<div class="write-form" id="write-form" data-placeholder="Написать сообщение..." contenteditable="true"></div>
+						<div class="send-button-parent"><button class="send-button-child" onclick="SendMessage()">Send</button></div>
 					</div>
 				</div>
 			</div>
@@ -247,6 +247,6 @@
 		</div>
 	</footer>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
-<script src="app.js"></script>
+<script src="js/index.js"></script>
 </body>
 </html>

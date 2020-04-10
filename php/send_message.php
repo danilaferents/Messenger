@@ -1,27 +1,25 @@
 
 <?php
-$servername = "localhost";
-$username = "root";
-$password = "password";
-$dbname = "wordpress";
+include_once("DatabaseConnection.php");
 
-// Create connection
-$conn = new mysqli($servername, $username, $password, $dbname);
-// Check connection
-if ($conn->connect_error) {
-    die("Connection failed: " . $conn->connect_error);
+$user = $_GET['user'];
+$username = $_GET['username'];
+$text = $_GET['mes'];
+$chanel = $_GET['ch'];
+
+$pdo = new DatabaseConnection();
+$conn = $pdo->connection();
+$query = "insert into messages (senderid, sendername, text, content, chanel)
+ values ($user, '$username', '$text', NULL, $chanel)";
+if($conn->query($query))
+{
+	echo "success";
+}
+else
+{
+	echo "error";
 }
 
-$query = "insert into test_messages (message) values (?);";
-
-
-$stmt = $conn->prepare($query);
-$stmt->bind_param("s", $_GET['mes']);
-$stmt->execute();
-
-
-
-$conn->close();
 ?>
 
 

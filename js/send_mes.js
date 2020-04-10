@@ -9,3 +9,5 @@ function SendMessage() {
   xhttp.open("GET", "php/send_message.php?mes="+str, true);
   xhttp.send();
 }
+
+
