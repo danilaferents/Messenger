@@ -19,7 +19,7 @@ $(document).ready(function() {
 		function(e){
 			if (login_form.checkValidity())
 			{
-			sendAjaxForm('result_form', 'login_form', 'login.php');
+			sendAjaxForm('result_form', 'login_form', 'php/login.php');
 			return false; 
 			}
 		}
@@ -31,7 +31,7 @@ $(document).ready(function() {
 		    {
 			if (document.forms["reg_form"].elements["password"].value == document.forms["reg_form"].elements["rep_password"].value){
 
-				sendAjaxForm('result_form', 'reg_form', 'registration.php');
+				sendAjaxForm('result_form', 'reg_form', 'php/registration.php');
 				return false;
 			}
 			else {

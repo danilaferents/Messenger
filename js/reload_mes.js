@@ -8,7 +8,7 @@ function ReloadMessages(should_restart) {
           }
     }
   };
-  xhttp.open("GET", "/renovate_messages.php", true);
+  xhttp.open("GET", "php/renovate_messages.php", true);
   xhttp.send();
 
 }

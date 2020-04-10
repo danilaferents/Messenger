@@ -6,6 +6,6 @@ function SendMessage() {
       ReloadMessages(false);
     }
   };
-  xhttp.open("GET", "/send_message.php?mes="+str, true);
+  xhttp.open("GET", "php/send_message.php?mes="+str, true);
   xhttp.send();
 }
