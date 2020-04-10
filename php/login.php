@@ -1,0 +1,64 @@
+
+<?php
+include_once("DatabaseConnection.php");
+if (isset($_POST['email'])) {
+    $email = $_POST['email']; 
+    if ($email == '') {
+        unset($email);
+        exit ("Введите пожалуйста логин!");
+    } 
+}
+if (isset($_POST['password'])) {
+    $password=$_POST['password']; 
+    if ($password =='') {
+        unset($password);
+        exit ("Введите пароль");
+    }
+}
+ 
+
+//$email = stripslashes($email);
+//$email = htmlspecialchars($email);
+ 
+//$password = stripslashes($password);
+//$password = htmlspecialchars($password);
+ 
+ 
+//$email = trim($email);
+//$password = trim($password);
+ 
+//$password = md5($password);
+
+$pdo = new DatabaseConnection();
+$conn = $pdo->connection();
+$query = "SELECT id FROM users WHERE email='$email' AND password='$password'";
+$user = $conn->query($query);
+$id_user = $user->fetch_array(MYSQLI_ASSOC);
+
+
+if (empty($id_user['id'])){
+    $result = array(
+    	'status' => "NOT OK",
+    	'url' => "",
+	'msg' => "Incorrect email or password"
+    ); 
+
+}
+else {
+
+    $_SESSION['password']=$password; 
+    $_SESSION['email']=$email; 
+    $_SESSION['id']=$id_user['id'];
+    $result = array(
+    	'status' => "OK",
+    	'url' => "messanges.html",
+	'msg' => ""
+    ); 
+}
+ echo json_encode($result);
+          
+
+//echo "<meta http-equiv='Refresh' content='0; URL=index.php'>";
+
+?>
+
