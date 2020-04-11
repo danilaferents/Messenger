@@ -6,21 +6,58 @@ var user_name = "Spider Man";
 var last_syn = "";
 
 LoadMessages();
+LoadChanels();
 setTimeout(RenovateMessages, 1000, true);
 
 function LoadMessages() {
+  console.log(last_syn);
   var xhttp = new XMLHttpRequest();
   xhttp.onreadystatechange = function() {
     if (this.readyState == 4 && this.status == 200) {
 		arr = JSON.parse(this.responseText);
 		ShowMessages(arr);
-		SetLastSynTime(arr[0]);
+		if (arr.length > 0){
+			SetLastSynTime(arr[0]);
+		}
 	}
   };
   xhttp.open("GET", "php/load_messages.php?ch="+chanel+"&syn="+last_syn, true);
   xhttp.send();
 
 }
+
+
+function CleanMessages(){
+
+	parent = document.getElementById('all-messages');
+	arr = document.getElementsByClassName("msg-back");
+	Array.from(arr).forEach((element) => parent.removeChild(element))
+}
+
+function PickChanel(item) {
+
+	document.getElementsByClassName("chat active")[0].className = "chat";
+	item.className = "chat active";
+	CleanMessages();
+	chanel = item.id;
+	last_syn = "";
+	console.log(chanel);
+	LoadMessages();
+}
+
+function LoadChanels() {
+  var xhttp = new XMLHttpRequest();
+  xhttp.onreadystatechange = function() {
+    if (this.readyState == 4 && this.status == 200) {
+		arr = JSON.parse(this.responseText);
+		ShowChanels(arr);
+	}
+  };
+  xhttp.open("GET", "php/load_chanels.php", true);
+  xhttp.send();
+
+}
+
 
 function RenovateMessages(renovate_again) {
   var xhttp = new XMLHttpRequest();
@@ -52,6 +89,12 @@ function ShowMessages(arr){
 }
 
 
+function ShowChanels(arr){
+	for (let i = arr.length - 1; i > -1; i--) {
+        	MakeChanel(arr[i].id, arr[i].lastsender, arr[i].lasttext, arr[i].lasttime, arr[i].chanelavatar, arr[i].chanelname); 
+        }
+}
+
 function SetLastSynTime(mes){
 	last_syn = mes.created;
 	//window.alert(last_syn);
@@ -79,6 +122,28 @@ function MakeMessage(sender, text, date, pict_src)
   var objDiv = document.getElementById("all-messages");
   objDiv.scrollTop = objDiv.scrollHeight;
 }
+
+
+function MakeChanel(id, lastsender, lasttext, lasttime, chanelavatar, chanelname)
+{
+   if (chanelavatar == null)
+   { 
+	chanelavatar = "pics/nochanelavatar.jpg";
+   }
+   var chat_logo = $('<div/>').addClass("chat-logo").append($('<img/>', { src: chanelavatar }));	
+   var chat_text = $('<div/>').addClass("chat-text").append($('<div/>').addClass("chat-name").text(chanelname));
+   var chat_last_message = $('<div/>')
+    	.addClass("chat-last-msg").append($('<span/>').addClass("chat-last-msg-dude")
+		.text(lastsender + ": ")).append($('<span/>').addClass("chat-last-msg-text").text(lasttext));
+   chat_text.append(chat_last_message)
+   var date = $('<div/>').addClass("chat-date").append($('<p/>').text(lasttime));
+   var result = $('<div/>')
+    	.addClass("chat").append(chat_logo).append(chat_text).append(date);
+   result.prop('id', id);
+   result.click(function(){PickChanel(this);});
+   $('#chats').append(result);
+}
+
 
 
 function SendMessage() {
