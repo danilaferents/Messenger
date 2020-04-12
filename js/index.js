@@ -1,13 +1,46 @@
 
 
 var chanel = 1;
-var user = 2;
-var user_name = "Spider Man";
+var user = 22;
+var user_name = "";
+var phone = "";
+var avatar = "";
 var last_syn = "";
 
+
+LoadUsedData(user);
 LoadMessages();
 LoadChanels();
 setTimeout(RenovateMessages, 1000, true);
+
+
+function LoadUsedData(cur_user){
+    var xhttp = new XMLHttpRequest();
+   xhttp.onreadystatechange = function() {
+    if (this.readyState == 4 && this.status == 200) {
+		answer = JSON.parse(this.responseText);
+		user_name = answer.name + " " + answer.surname;
+		phone = answer.phone;
+		avatar = answer.avatar;
+	}
+  };
+  xhttp.open("GET", "php/load_user_data.php?id="+cur_user, true);
+  xhttp.send();
+}
+
+
+function LoadUsedData_callback(cur_user, callback, text, created){
+    var xhttp = new XMLHttpRequest();
+    xhttp.onreadystatechange = function() {
+    if (this.readyState == 4 && this.status == 200) {
+		answer = JSON.parse(this.responseText);
+		callback(answer.name + " " + answer.surname, text, created, answer.avatar);
+	}
+  };
+  xhttp.open("GET", "php/load_user_data.php?id="+cur_user, true);
+  xhttp.send();
+}
+
 
 function LoadMessages() {
   //console.log(last_syn);
@@ -28,14 +61,12 @@ function LoadMessages() {
 
 
 function CleanMessages(){
-
 	parent = document.getElementById('all-messages');
 	arr = document.getElementsByClassName("msg-back");
 	Array.from(arr).forEach((element) => parent.removeChild(element))
 }
 
 function PickChanel(item) {
-
 	document.getElementsByClassName("chat active")[0].className = "chat";
 	item.className = "chat active";
 	CleanMessages();
@@ -85,8 +116,14 @@ function RenovateMessages(renovate_again) {
 
 
 function ShowMessages(arr){
+	console.log(arr);
+	console.log(arr.length);
+	console.log(arr[0]);
 	for (let i = arr.length - 1; i > -1; i--) {
-        	MakeMessage(arr[i].sendername, arr[i].text, arr[i].created, arr[i].content); 
+		//console.log(arr[i].sendername);
+		
+		var user_data = LoadUsedData_callback(arr[i].senderid, MakeMessage, arr[i].text, arr[i].created);
+        	//MakeMessage(user_data.user_name, arr[i].text, arr[i].created, user_data.avatar); 
         }
 }
 
