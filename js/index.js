@@ -10,7 +10,7 @@ LoadChanels();
 setTimeout(RenovateMessages, 1000, true);
 
 function LoadMessages() {
-  console.log(last_syn);
+  //console.log(last_syn);
   var xhttp = new XMLHttpRequest();
   xhttp.onreadystatechange = function() {
     if (this.readyState == 4 && this.status == 200) {
@@ -41,7 +41,7 @@ function PickChanel(item) {
 	CleanMessages();
 	chanel = item.id;
 	last_syn = "";
-	console.log(chanel);
+	//console.log(chanel);
 	LoadMessages();
 }
 
@@ -51,6 +51,8 @@ function LoadChanels() {
     if (this.readyState == 4 && this.status == 200) {
 		arr = JSON.parse(this.responseText);
 		ShowChanels(arr);
+		//console.log(document.getElementsByClassName("chat")[0]);
+  		document.getElementsByClassName("chat")[0].className = "chat active";
 	}
   };
   xhttp.open("GET", "php/load_chanels.php", true);
@@ -72,7 +74,7 @@ function RenovateMessages(renovate_again) {
 		}
 		if (renovate_again)
 		{
-			setTimeout(RenovateMessages, 1000, true);
+			setTimeout(RenovateMessages, 100, true);
 		}
 	}
   };
@@ -110,7 +112,7 @@ function MakeMessage(sender, text, date, pict_src)
     .addClass("username")
       .text(sender).css("color", "lightblue");
    var text = $('<div/>')
-    .addClass("msg-content").text(text);
+    .addClass("msg-content").html(text);
    var msgtext = $('<div/>')
     .addClass("msg-text").append(sender).append(text);
    var avatar = $('<div/>').addClass("avatar").append($('<img/>', { src: pict_src }));
@@ -121,11 +123,12 @@ function MakeMessage(sender, text, date, pict_src)
    $('#all-messages').append(result);
   var objDiv = document.getElementById("all-messages");
   objDiv.scrollTop = objDiv.scrollHeight;
+ 
 }
 
 
 function MakeChanel(id, lastsender, lasttext, lasttime, chanelavatar, chanelname)
-{
+{ 
    if (chanelavatar == null)
    { 
 	chanelavatar = "pics/nochanelavatar.jpg";
@@ -152,11 +155,12 @@ function SendMessage() {
   {
 	return;
   }
+  str = encodeURIComponent(str);
   document.getElementById("write-form").innerHTML = "";
   var xhttp = new XMLHttpRequest();
   xhttp.onreadystatechange = function() {
     if (this.readyState == 4 && this.status == 200) {
-         RenovateMessages(false);
+         //RenovateMessages(false);
     }
   };
   xhttp.open("GET", "php/send_message.php?mes="+str+"&ch="+chanel+"&user="+user+"&username="+user_name, true);
