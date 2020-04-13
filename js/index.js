@@ -116,9 +116,9 @@ function RenovateMessages(renovate_again) {
 
 
 function ShowMessages(arr){
-	console.log(arr);
-	console.log(arr.length);
-	console.log(arr[0]);
+	//console.log(arr);
+	//console.log(arr.length);
+	//console.log(arr[0]);
 	for (let i = arr.length - 1; i > -1; i--) {
 		//console.log(arr[i].sendername);
 		
