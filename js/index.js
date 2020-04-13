@@ -1,40 +1,33 @@
 
 
-var chanel = 1;
+var chanel = 3;
 var user = 22;
 var user_name = "";
 var phone = "";
 var avatar = "";
 var last_syn = "";
+var user_surname = "";
 
+let users_info = {};
+let all_messages = {};
+let chanels_list;
 
-LoadUsedData(user);
-LoadMessages();
+LoadUserData(user);
 LoadChanels();
-setTimeout(RenovateMessages, 1000, true);
+StartRenovating();
+//setTimeout(RequestForNotActiveChanelsUpdate, 1000, chanel, true);
 
-
-function LoadUsedData(cur_user){
-    var xhttp = new XMLHttpRequest();
-   xhttp.onreadystatechange = function() {
-    if (this.readyState == 4 && this.status == 200) {
-		answer = JSON.parse(this.responseText);
-		user_name = answer.name + " " + answer.surname;
-		phone = answer.phone;
-		avatar = answer.avatar;
-	}
-  };
-  xhttp.open("GET", "php/load_user_data.php?id="+cur_user, true);
-  xhttp.send();
-}
-
-
-function LoadUsedData_callback(cur_user, callback, text, created){
+function LoadUserData(cur_user){
     var xhttp = new XMLHttpRequest();
     xhttp.onreadystatechange = function() {
     if (this.readyState == 4 && this.status == 200) {
 		answer = JSON.parse(this.responseText);
-		callback(answer.name + " " + answer.surname, text, created, answer.avatar);
+		user_name = answer.name;
+		user_surname = answer.surname;
+		phone = answer.phone;
+		avatar = answer.avatar;
+		users_info[cur_user] = answer;
+		SetUserData(user_name, avatar);
 	}
   };
   xhttp.open("GET", "php/load_user_data.php?id="+cur_user, true);
@@ -42,21 +35,83 @@ function LoadUsedData_callback(cur_user, callback, text, created){
 }
 
 
-function LoadMessages() {
-  //console.log(last_syn);
-  var xhttp = new XMLHttpRequest();
-  xhttp.onreadystatechange = function() {
+function StartRenovating(){
+    var xhttp = new XMLHttpRequest();
+    xhttp.onreadystatechange = function() {
     if (this.readyState == 4 && this.status == 200) {
-		arr = JSON.parse(this.responseText);
-		ShowMessages(arr);
-		if (arr.length > 0){
-			SetLastSynTime(arr[0]);
-		}
+		answer = JSON.parse(this.responseText);
+		last_syn = answer.time;
+		RenovateMessages(true);
 	}
   };
-  xhttp.open("GET", "php/load_messages.php?ch="+chanel+"&syn="+last_syn, true);
+  xhttp.open("GET", "php/get_last_message_time.php", true);
   xhttp.send();
+}
 
+
+function LoadAllMessages()
+{
+	for (let i = 0; i < chanels_list.length; i++) {
+        	LoadMessages(chanels_list[i].id); 
+        }
+}
+
+
+function SetUserData(cur_user_name, cur_avatar){
+	document.getElementsByClassName("profile-name")[0].textContent = cur_user_name;
+	document.getElementsByClassName("author-avatar")[0].childNodes[0].src = cur_avatar;
+}
+
+
+function LoadUserData_callback(message_id, cur_user, callback){
+    if (users_info.hasOwnProperty(cur_user))
+    {
+	callback(users_info[cur_user].name + " " + users_info[cur_user].surname, users_info[cur_user].avatar, message_id);
+    }
+    else
+    {
+   	 var xhttp = new XMLHttpRequest();
+   	 xhttp.onreadystatechange = function() {
+   	 if (this.readyState == 4 && this.status == 200) {
+			answer = JSON.parse(this.responseText);
+			callback(answer.name + " " + answer.surname, answer.avatar, message_id);
+			users_info[cur_user] = answer;
+		}
+ 	 };
+  	 xhttp.open("GET", "php/load_user_data.php?id="+cur_user, true);
+  	 xhttp.send();
+     }
+}
+
+
+function LoadMessages(cur_chanel) {
+  if (all_messages.hasOwnProperty(cur_chanel))
+  {
+	if (cur_chanel == chanel){
+		ShowMessages(all_messages[cur_chanel]);
+	}
+  }
+  else 
+  {
+  	var xhttp = new XMLHttpRequest();
+  	xhttp.onreadystatechange = function() {
+  		if (this.readyState == 4 && this.status == 200) {
+			arr = JSON.parse(this.responseText);
+			all_messages[cur_chanel] = arr.reverse();
+			if (arr.length > 0){
+				if (cur_chanel == chanel){
+					ShowMessages(arr);
+				}
+				RenovateChanelInfo(arr[arr.length - 1]);
+			}
+			//console.log(cur_chanel);
+			//console.log(arr);
+
+		}
+	};
+        xhttp.open("GET", "php/load_messages.php?ch="+cur_chanel, true);
+        xhttp.send();          
+  }
 }
 
 
@@ -66,24 +121,28 @@ function CleanMessages(){
 	Array.from(arr).forEach((element) => parent.removeChild(element))
 }
 
+
 function PickChanel(item) {
+	console.log(all_messages);
 	document.getElementsByClassName("chat active")[0].className = "chat";
 	item.className = "chat active";
 	CleanMessages();
 	chanel = item.id;
-	last_syn = "";
-	//console.log(chanel);
-	LoadMessages();
+	LoadMessages(chanel);
 }
+
 
 function LoadChanels() {
   var xhttp = new XMLHttpRequest();
   xhttp.onreadystatechange = function() {
-    if (this.readyState == 4 && this.status == 200) {
+  if (this.readyState == 4 && this.status == 200) {
 		arr = JSON.parse(this.responseText);
 		ShowChanels(arr);
 		//console.log(document.getElementsByClassName("chat")[0]);
   		document.getElementsByClassName("chat")[0].className = "chat active";
+		//chanel_syn = arr[0].lasttime;
+		chanels_list = arr;
+		LoadAllMessages()
 	}
   };
   xhttp.open("GET", "php/load_chanels.php", true);
@@ -93,14 +152,22 @@ function LoadChanels() {
 
 
 function RenovateMessages(renovate_again) {
-  var xhttp = new XMLHttpRequest();
-  xhttp.onreadystatechange = function() {
+    console.log(last_syn);
+    if (last_syn == "")
+    {
+	console.log("promlems228");
+	setTimeout(RenovateMessages, 100, true);
+	return;
+    }
+    //console.log(last_syn);
+    var xhttp = new XMLHttpRequest();
+    xhttp.onreadystatechange = function() {
     if (this.readyState == 4 && this.status == 200) {
-		//window.alert();
 		arr = JSON.parse(this.responseText);
-		ShowMessages(arr);
 		if (arr.length > 0)
 		{
+			UpdateMessages(arr.reverse());
+			//ShowNewMessages(all_messages[chanel]);
 			SetLastSynTime(arr[0]);
 		}
 		if (renovate_again)
@@ -109,58 +176,122 @@ function RenovateMessages(renovate_again) {
 		}
 	}
   };
-  xhttp.open("GET", "php/load_messages.php?ch="+chanel+"&syn="+last_syn, true);
+  xhttp.open("GET", "php/reload_messages.php?syn="+last_syn, true);
   xhttp.send();
-
 }
 
 
-function ShowMessages(arr){
+function UpdateMessages(arr){
 	//console.log(arr);
-	//console.log(arr.length);
-	//console.log(arr[0]);
-	for (let i = arr.length - 1; i > -1; i--) {
-		//console.log(arr[i].sendername);
-		
-		var user_data = LoadUsedData_callback(arr[i].senderid, MakeMessage, arr[i].text, arr[i].created);
-        	//MakeMessage(user_data.user_name, arr[i].text, arr[i].created, user_data.avatar); 
+	elements_to_show = [];
+	Array.from(arr).forEach(function(element){
+		    RenovateChanelInfo(element);
+		    //console.log(element);
+                    var th_chanel = element.chanel;
+		    all_messages[th_chanel].push(element);	
+		    if (chanel == th_chanel){
+			 elements_to_show.push(element);
+			 
+		    }
+	     }
+	)
+	if (elements_to_show.length > 0)
+	{
+		ShowMessages(elements_to_show);
+	}
+}
+
+function ShowMessages(arr){
+	for (let i = 0; i < arr.length; i++) {
+		id = "mes" + String(arr[i].id);
+		MakeMessage(id, arr[i].text, arr[i].created);
+		LoadUserData_callback(id, arr[i].senderid, UpdateMessage);
         }
 }
 
 
 function ShowChanels(arr){
 	for (let i = arr.length - 1; i > -1; i--) {
-        	MakeChanel(arr[i].id, arr[i].lastsender, arr[i].lasttext, arr[i].lasttime, arr[i].chanelavatar, arr[i].chanelname); 
+        	MakeChanel(arr[i].id, "no data", "no data", "no data", arr[i].chanelavatar, arr[i].chanelname); 
         }
 }
+
 
 function SetLastSynTime(mes){
 	last_syn = mes.created;
 	//window.alert(last_syn);
 }
 
-function MakeMessage(sender, text, date, pict_src)
+function MakeMessage(id, text, date)
 {
-   if (pict_src == null)
-  { 
-	pict_src = "pics/noavatar.jpg";
-  }
-   var sender = $('<div/>')
+   //if (pict_src == null)
+  //{ 
+	//pict_src = "pics/noavatar.jpg";
+ // }
+   var el_sender = $('<div/>')
     .addClass("username")
-      .text(sender).css("color", "lightblue");
-   var text = $('<div/>')
+      .text("sender").css("color", "lightblue");
+   var el_text = $('<div/>')
     .addClass("msg-content").html(text);
    var msgtext = $('<div/>')
-    .addClass("msg-text").append(sender).append(text);
-   var avatar = $('<div/>').addClass("avatar").append($('<img/>', { src: pict_src }));
+    .addClass("msg-text").append(el_sender).append(el_text);
+   var avatar = $('<div/>').addClass("avatar").append($('<img/>', { src: "pics/noavatar.jpg" }));
    var msg = $('<div/>').addClass("msg").append(avatar).append(msgtext);
    msg.append($('<div/>').addClass("msg-date").append($('<p/>').text(date)));
    var result = $('<div/>')
     .addClass("msg-back").append(msg);
+   result.prop("id", id);
    $('#all-messages').append(result);
-  var objDiv = document.getElementById("all-messages");
-  objDiv.scrollTop = objDiv.scrollHeight;
- 
+   var objDiv = document.getElementById("all-messages");
+   objDiv.scrollTop = objDiv.scrollHeight;	
+   //RenovateActiveChanelInfo(sender, text, date);
+}
+
+
+function UpdateMessage(name, avatar, id){
+	var element = document.getElementById(id);
+	element.getElementsByClassName("avatar")[0].childNodes[0].src = avatar;
+	element.getElementsByClassName("username")[0].innerHTML = name;
+}
+
+
+function RenovateChanelInfo(info_obj)
+{
+	console.log(info_obj);
+	text =info_obj.text;
+	sender = info_obj.sender + ": ";
+	created = info_obj.created;	
+	var active_chanel = document.getElementById(info_obj.chanel);
+	active_chanel.getElementsByClassName("chat-last-msg-text")[0].innerHTML = text;
+	active_chanel.getElementsByClassName("chat-date")[0].firstElementChild.innerHTML = created;	
+	LoadUserData_callback_for_chanel_sender(info_obj.chanel, info_obj.senderid, UpdateChanel_last_sender);
+}
+
+
+function UpdateChanel_last_sender(id, sender){
+	var element = document.getElementById(id);
+	element.getElementsByClassName("chat-last-msg-dude")[0].innerHTML = sender + ": ";
+}
+
+
+function LoadUserData_callback_for_chanel_sender(chanel_id, sender_id, callback){
+    if (users_info.hasOwnProperty(sender_id))
+    {
+	callback(chanel_id, users_info[sender_id].name + " " + users_info[sender_id].surname);
+    }
+    else
+    {
+   	 var xhttp = new XMLHttpRequest();
+   	 xhttp.onreadystatechange = function() {
+   	 if (this.readyState == 4 && this.status == 200) {
+			answer = JSON.parse(this.responseText);
+			callback(chanel_id, answer.name + " " + answer.surname);
+			users_info[cur_user] = answer;
+		}
+ 	 };
+  	 xhttp.open("GET", "php/load_user_data.php?id="+sender_id, true);
+  	 xhttp.send();
+     }
 }
 
 

@@ -2,13 +2,14 @@
 <?php
 include_once("DatabaseConnection.php");
 
+
 $pdo = new DatabaseConnection();
 $conn = $pdo->connection();
 
 
-$query = "SELECT id, chanelavatar, chanelname FROM chanels";
-
+$query = "SELECT MAX(created) as time FROM messages";
 $result = $conn->query($query);
+
 
 if (!$result) {
     $message  = 'Неверный запрос: ' . "\n";
@@ -16,13 +17,7 @@ if (!$result) {
     die($message);
 }
 
-$myArray = array();
-
-while($row = $result->fetch_assoc()) {
-        $myArray[] = $row;
-    }
-
-echo json_encode($myArray)
+echo json_encode($result->fetch_array(MYSQLI_ASSOC));
 
 
 ?>

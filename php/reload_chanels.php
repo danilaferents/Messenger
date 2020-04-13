@@ -2,13 +2,15 @@
 <?php
 include_once("DatabaseConnection.php");
 
-$chanel = $_GET['ch'];
-
-$pdo = new DatabaseConnection();
+$active_id = $_GET['act'];
+$last_syn = $_GET['syn'];
+$pdo = new DatabaseConnection();html
 $conn = $pdo->connection();
 
 
-$query = "SELECT id, senderid, text, created, content, chanel FROM messages where chanel = $chanel order by created desc limit 50";
+$query = "SELECT id, lastsender, lasttext, lasttime FROM chanels where lasttime > $last_syn and id != $active_id";
+
+$result = $conn->query($query);
 $time_wait = 0;
 $result = $conn->query($query);
 while ($result->num_rows == 0)
@@ -22,8 +24,6 @@ while ($result->num_rows == 0)
 	}
 }
 
-
-
 if (!$result) {
     $message  = 'Неверный запрос: ' . "\n";
     $message .= 'Запрос целиком: ' . $query;
@@ -36,7 +36,8 @@ while($row = $result->fetch_assoc()) {
         $myArray[] = $row;
     }
 
-echo json_encode($myArray);
+echo json_encode($myArray)
+
 
 ?>
 
