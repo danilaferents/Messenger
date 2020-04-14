@@ -1,18 +1,18 @@
-function StartRegistration() {
-  document.getElementById("login_form").style.display = "none";
-  document.getElementById("reg_form").style.display = "block";
-  document.getElementById("button_to_reg").style.display = "none";
-  document.getElementById("button_to_log").style.display = "block";
-  document.getElementById("error").innerHTML = "";
-}
+//function StartRegistration() {
+//  document.getElementById("login_form").style.display = "none";
+//  document.getElementById("reg_form").style.display = "block";
+//  document.getElementById("button_to_reg").style.display = "none";
+//  document.getElementById("button_to_log").style.display = "block";
+//  document.getElementById("error").innerHTML = "";
+//}
 
-function StartLogin() {
-  document.getElementById("login_form").style.display = "block";
-  document.getElementById("reg_form").style.display = "none";
-  document.getElementById("button_to_reg").style.display = "block";
-  document.getElementById("button_to_log").style.display = "none";
-  document.getElementById("error").innerHTML = "";
-}
+//function StartLogin() {
+//  document.getElementById("login_form").style.display = "block";
+//  document.getElementById("reg_form").style.display = "none";
+//  document.getElementById("button_to_reg").style.display = "block";
+//  document.getElementById("button_to_log").style.display = "none";
+//  document.getElementById("error").innerHTML = "";
+//}
 
 $(document).ready(function() {
     $("#log").click(
@@ -53,8 +53,12 @@ function sendAjaxForm(result_form, ajax_form, url) {
         	result = $.parseJSON(response);
 		if (result.status == "OK")
 		{
-			window.alert(result.url);
-			//window.location.href = result.url;
+			//window.alert(result.url);
+			user = result.id;
+			LoadUserData(user);
+			LoadChanels();
+			StartRenovating();
+			setTimeout(RenovateUsersData, 60 * 1000, true);
 		}
         	else
 		{

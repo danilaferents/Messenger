@@ -1,5 +1,8 @@
 
 <?php
+
+session_start();
+
 include_once("DatabaseConnection.php");
 
 function prepare_for_db(&$str)
@@ -64,6 +67,7 @@ if ($result->num_rows>0){
 	$result = array(
     	'status' => "NOT OK",
     	'url' => "",
+	'id' => "",
 	'msg' => "email is already used"
     ); 
 }
@@ -76,9 +80,11 @@ else {
     $_SESSION['password']=$password; 
     $_SESSION['email']=$email; 
     $_SESSION['id']=$id_user['id'];
+    session_write_close();
     $result = array(
     	'status' => "OK",
     	'url' => "messanges.html",
+	'id' => $id_user['id'],
 	'msg' => ""	
     ); 
 }

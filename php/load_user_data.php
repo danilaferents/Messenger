@@ -1,13 +1,21 @@
 
 <?php
 include_once("DatabaseConnection.php");
+include_once("check_user.php");
 
-$user_id = $_GET['id'];
+$asking_user = $_GET['id'];
+if (!check_user($asking_user))
+{
+	echo "User is not verificated";
+	return;
+}
+
+$user = $_GET['user'];
 $pdo = new DatabaseConnection();
 $conn = $pdo->connection();
 
 
-$query = "SELECT name, surname, phone, avatar FROM users where id = $user_id";
+$query = "SELECT name, surname, phone, avatar FROM users where id = $user";
 $result = $conn->query($query);
 
 

@@ -1,7 +1,7 @@
 
 
-var chanel = 3;
-var user = 22;
+var chanel = "";
+var user = "";
 var user_name = "";
 var phone = "";
 var avatar = "";
@@ -12,26 +12,62 @@ let users_info = {};
 let all_messages = {};
 let chanels_list;
 
-LoadUserData(user);
-LoadChanels();
-StartRenovating();
-//setTimeout(RequestForNotActiveChanelsUpdate, 1000, chanel, true);
+//LoadUserData(user);
+//LoadChanels();
+//StartRenovating();
+//setTimeout(RenovateUsersData, 60 * 1000, true);
+
 
 function LoadUserData(cur_user){
-    var xhttp = new XMLHttpRequest();
-    xhttp.onreadystatechange = function() {
-    if (this.readyState == 4 && this.status == 200) {
-		answer = JSON.parse(this.responseText);
-		user_name = answer.name;
-		user_surname = answer.surname;
-		phone = answer.phone;
-		avatar = answer.avatar;
-		users_info[cur_user] = answer;
+    if (users_info.hasOwnProperty(cur_user))
+    {
+	if (users_info[cur_user] instanceof XMLHttpRequest)
+	{
+		users_info[cur_user].addEventListener('readystatechange', function() {
+   	 		if (this.readyState == 4 && this.status == 200) {
+				answer = JSON.parse(this.responseText);
+				user_name = answer.name;
+				user_surname = answer.surname;
+				phone = answer.phone;
+				avatar = answer.avatar;
+				users_info[cur_user] = answer;
+				SetUserData(user_name, avatar);
+			}
+ 	 	});
+	}
+	else
+	{
+		user_name = users_info[cur_user].name;
+		user_surname = users_info[cur_user].surname;
+		phone = users_info[cur_user].phone;
+		avatar = users_info[cur_user].avatar;
 		SetUserData(user_name, avatar);
 	}
-  };
-  xhttp.open("GET", "php/load_user_data.php?id="+cur_user, true);
-  xhttp.send();
+    }
+    else
+    {	
+    	  var xhttp = new XMLHttpRequest();
+	  users_info[cur_user] = xhttp;
+   	  xhttp.onreadystatechange = function() {
+  	  if (this.readyState == 4 && this.status == 200) {
+			answer = JSON.parse(this.responseText);
+			user_name = answer.name;
+			user_surname = answer.surname;
+			phone = answer.phone;
+			avatar = answer.avatar;
+			users_info[cur_user] = answer;
+     			if (avatar === null){
+				avatar = "pics/users_avatars/noavatar.jpg";
+     			}
+			SetUserData(user_name, avatar);
+		}
+
+  	};
+  	xhttp.open("GET", "php/load_user_data.php?id="+user+"&user="+cur_user, true);
+  	xhttp.send();
+     }
+
+     console.log(avatar);
 }
 
 
@@ -44,7 +80,7 @@ function StartRenovating(){
 		RenovateMessages(true);
 	}
   };
-  xhttp.open("GET", "php/get_last_message_time.php", true);
+  xhttp.open("GET", "php/get_last_message_time.php?id="+user, true);
   xhttp.send();
 }
 
@@ -66,19 +102,37 @@ function SetUserData(cur_user_name, cur_avatar){
 function LoadUserData_callback(message_id, cur_user, callback){
     if (users_info.hasOwnProperty(cur_user))
     {
-	callback(users_info[cur_user].name + " " + users_info[cur_user].surname, users_info[cur_user].avatar, message_id);
+	if (users_info[cur_user] instanceof XMLHttpRequest)
+	{
+		users_info[cur_user].addEventListener('readystatechange', function() {
+   	 		if (this.readyState == 4 && this.status == 200) {
+				answer = JSON.parse(this.responseText);
+				callback(answer.name + " " + answer.surname, answer.avatar, message_id);
+				users_info[cur_user] = answer;
+			}
+ 	 	});
+	}
+	else
+	{
+		callback(users_info[cur_user].name + " " + users_info[cur_user].surname, users_info[cur_user].avatar, 			message_id);
+		
+	}	
     }
     else
     {
    	 var xhttp = new XMLHttpRequest();
+	 users_info[cur_user] = xhttp;
    	 xhttp.onreadystatechange = function() {
    	 if (this.readyState == 4 && this.status == 200) {
 			answer = JSON.parse(this.responseText);
+			if (answer.avatar === null){
+				answer.avatar = "pics/users_avatars/noavatar.jpg";
+     			}
 			callback(answer.name + " " + answer.surname, answer.avatar, message_id);
 			users_info[cur_user] = answer;
 		}
  	 };
-  	 xhttp.open("GET", "php/load_user_data.php?id="+cur_user, true);
+  	 xhttp.open("GET", "php/load_user_data.php?id="+user + "&user="+cur_user, true);
   	 xhttp.send();
      }
 }
@@ -109,7 +163,7 @@ function LoadMessages(cur_chanel) {
 
 		}
 	};
-        xhttp.open("GET", "php/load_messages.php?ch="+cur_chanel, true);
+        xhttp.open("GET", "php/load_messages.php?ch="+cur_chanel+"&id="+user, true);
         xhttp.send();          
   }
 }
@@ -122,8 +176,15 @@ function CleanMessages(){
 }
 
 
+function PickFirstChanel(){
+	var element = document.getElementsByClassName("chat")[0];
+	element.className = "chat active";
+	chanel = element.id;
+}
+
+
 function PickChanel(item) {
-	console.log(all_messages);
+	//console.log(all_messages);
 	document.getElementsByClassName("chat active")[0].className = "chat";
 	item.className = "chat active";
 	CleanMessages();
@@ -142,20 +203,21 @@ function LoadChanels() {
   		document.getElementsByClassName("chat")[0].className = "chat active";
 		//chanel_syn = arr[0].lasttime;
 		chanels_list = arr;
-		LoadAllMessages()
+		PickFirstChanel();
+		LoadAllMessages();
 	}
   };
-  xhttp.open("GET", "php/load_chanels.php", true);
+  xhttp.open("GET", "php/load_chanels.php?id="+user, true);
   xhttp.send();
 
 }
 
 
 function RenovateMessages(renovate_again) {
-    console.log(last_syn);
+    //console.log(last_syn);
     if (last_syn == "")
     {
-	console.log("promlems228");
+	//console.log("promlems228");
 	setTimeout(RenovateMessages, 100, true);
 	return;
     }
@@ -176,7 +238,7 @@ function RenovateMessages(renovate_again) {
 		}
 	}
   };
-  xhttp.open("GET", "php/reload_messages.php?syn="+last_syn, true);
+  xhttp.open("GET", "php/reload_messages.php?syn="+last_syn+"&id="+user, true);
   xhttp.send();
 }
 
@@ -249,6 +311,9 @@ function MakeMessage(id, text, date)
 
 
 function UpdateMessage(name, avatar, id){
+	if (avatar === null){
+		avatar = "pics/users_avatars/noavatar.jpg";
+     	}
 	var element = document.getElementById(id);
 	element.getElementsByClassName("avatar")[0].childNodes[0].src = avatar;
 	element.getElementsByClassName("username")[0].innerHTML = name;
@@ -257,7 +322,7 @@ function UpdateMessage(name, avatar, id){
 
 function RenovateChanelInfo(info_obj)
 {
-	console.log(info_obj);
+	//console.log(info_obj);
 	text =info_obj.text;
 	sender = info_obj.sender + ": ";
 	created = info_obj.created;	
@@ -277,19 +342,38 @@ function UpdateChanel_last_sender(id, sender){
 function LoadUserData_callback_for_chanel_sender(chanel_id, sender_id, callback){
     if (users_info.hasOwnProperty(sender_id))
     {
-	callback(chanel_id, users_info[sender_id].name + " " + users_info[sender_id].surname);
+	console.log('here1');
+	console.log(typeof users_info[sender_id]);
+	if (users_info[sender_id] instanceof XMLHttpRequest)
+	{
+		console.log('here2');
+		console.log(users_info[sender_id]);
+		users_info[sender_id].addEventListener('readystatechange',  function() {
+   	 		if (this.readyState == 4 && this.status == 200) {
+				answer = JSON.parse(this.responseText);
+				callback(chanel_id, answer.name + " " + answer.surname);
+				users_info[sender_id] = answer;
+			}
+ 	 	});
+	}
+	else
+	{
+		console.log('here3');
+		callback(chanel_id, users_info[sender_id].name + " " + users_info[sender_id].surname);
+	}
     }
     else
     {
    	 var xhttp = new XMLHttpRequest();
+	 users_info[sender_id] = xhttp;
    	 xhttp.onreadystatechange = function() {
    	 if (this.readyState == 4 && this.status == 200) {
 			answer = JSON.parse(this.responseText);
 			callback(chanel_id, answer.name + " " + answer.surname);
-			users_info[cur_user] = answer;
+			users_info[sender_id] = answer;
 		}
  	 };
-  	 xhttp.open("GET", "php/load_user_data.php?id="+sender_id, true);
+  	 xhttp.open("GET", "php/load_user_data.php?id="+user + "&user="+sender_id, true);
   	 xhttp.send();
      }
 }
@@ -317,6 +401,15 @@ function MakeChanel(id, lastsender, lasttext, lasttime, chanelavatar, chanelname
 
 
 
+function RenovateUsersData(recursive){
+	users_info = {};
+	if (recursive)
+	{
+		setTimeout(RenovateUsersData, 60 * 1000, true);
+	}	
+}
+
+
 function SendMessage() {
   var str = document.getElementById("write-form").innerHTML;
   if (str=="")
@@ -331,7 +424,7 @@ function SendMessage() {
          //RenovateMessages(false);
     }
   };
-  xhttp.open("GET", "php/send_message.php?mes="+str+"&ch="+chanel+"&user="+user+"&username="+user_name, true);
+  xhttp.open("GET", "php/send_message.php?mes="+str+"&ch="+chanel+"&id="+user, true);
   xhttp.send();
 }
 

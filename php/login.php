@@ -1,5 +1,7 @@
 
 <?php
+session_start();
+
 include_once("DatabaseConnection.php");
 if (isset($_POST['email'])) {
     $email = $_POST['email']; 
@@ -40,6 +42,7 @@ if (empty($id_user['id'])){
     $result = array(
     	'status' => "NOT OK",
     	'url' => "",
+	'id' => '',
 	'msg' => "Incorrect email or password"
     ); 
 
@@ -49,8 +52,10 @@ else {
     $_SESSION['password']=$password; 
     $_SESSION['email']=$email; 
     $_SESSION['id']=$id_user['id'];
+    session_write_close();
     $result = array(
     	'status' => "OK",
+	'id' => $id_user['id'],
     	'url' => "messanges.html",
 	'msg' => ""
     ); 

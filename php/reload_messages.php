@@ -1,7 +1,14 @@
 
 <?php
 include_once("DatabaseConnection.php");
+include_once("check_user.php");
 
+$user = $_GET['id'];
+if (!check_user($user))
+{
+	echo "User is not verificated";
+	return;
+}
 $syn = $_GET['syn'];
 $pdo = new DatabaseConnection();
 $conn = $pdo->connection();
