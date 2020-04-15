@@ -1,5 +1,20 @@
 $(document).ready(function () {
 	var my_modal = $('#my-modal');
+	var new_chat_modal = $('#new-chat-modal');
+	$('#chat_avatar').on('change',  function() {
+		var reader = new FileReader();
+		reader.onload = function (e) {
+	    	$(".new-chat-img")[0].src = e.target.result;
+		};
+		reader.readAsDataURL(this.files[0]);
+	});
+	$('#avatar').on('change',  function() {
+		var reader = new FileReader();
+		reader.onload = function (e) {
+	    	$(".my-img")[0].src = e.target.result;
+		};
+		reader.readAsDataURL(this.files[0]);
+	});
 	$('#login-modal').bPopup();
 	$('.form-change span').on('click', function() {
 		$(this).parent().parent().prev().hide();
@@ -18,11 +33,20 @@ $(document).ready(function () {
 		my_modal.bPopup();
 	});
 	$('.my-name').keyup(function(event){
-    if(event.keyCode == 13) {
-    	my_modal.close();
-		var s = $(this).text();
-		$('.header-profile .profile-name').text(s);
-		$(this).text(s);
-	}
-});
+	    if(event.keyCode == 13) {
+	    	my_modal.close();
+			var s = $(this).text();
+			$('.header-profile .profile-name').text(s);
+			$(this).text(s);
+		}
+	});
+	$('.new-chat-btn').on('click', function() {
+		new_chat_modal.bPopup();
+	});
+	$('.new-chat-img, .new-chat-img-btn').on('click', function() {
+		$('#chat_avatar').trigger('click');
+	});
+	$('.my-img, .my-img-btn').on('click', function() {
+		$('#avatar').trigger('click');
+	});
 });

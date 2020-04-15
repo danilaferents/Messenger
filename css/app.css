@@ -381,8 +381,6 @@ main {
 	height: 30px;
 	width: 40px;
 	margin-bottom: 12px;
-	color: #adadad;
-	background-color: gray;
 }
 
 footer {
@@ -471,7 +469,7 @@ footer {
 	text-decoration: underline;
 }
 
-#my-modal {
+#my-modal, #new-chat-modal {
 	display: none;
 	width: 100%;
 	max-width: 400px;
@@ -520,4 +518,104 @@ footer {
 	border: 1px solid #fff;
 	padding: 2px;
 	max-width: calc(100% - 88px);
+}
+
+.new-chat-btn-container {
+	position: relative;
+	width: calc(100% - 32px);
+	padding: 7px 16px;
+}
+
+.new-chat-btn {
+	width: 100%;
+	height: 40px;
+	background-color: #30DC06;
+	font-size: 20px;
+	border: none;
+	border-radius: 5px;
+	cursor: pointer;
+	transition: .3s;
+}
+.new-chat-btn:hover {
+	background-color: #249D06;
+}
+
+.new-chat-form, .my-form {
+	background-color: #5682a3;
+	display: -webkit-flex;
+	display: -moz-flex;
+	display: -ms-flex;
+	display: -o-flex;
+	display: flex;
+	-webkit-flex-direction: row;
+	-moz-flex-direction: row;
+	-ms-flex-direction: row;
+	-o-flex-direction: row;
+	flex-direction: row;
+	align-items: center;
+	padding: 5px 10px;	
+}
+
+#new-chat-modal input[type="text"], #my-modal input[type="text"] {
+	font-size: 16px;
+	border: none;
+	outline: none;
+	border-bottom: 1px solid #fff;
+	background-color: #5682a3;
+	padding: 2px 5px;
+}
+
+#new-chat-modal input[type="text"]::placeholder, #my-modal input[type="text"]::placeholder {
+	color: #ddd;
+}
+
+#new-chat-modal input[type="submit"], #my-modal input[type="submit"] {
+	background-color: #249D06;
+	border: none;
+	font-size: 14px;
+	padding: 2px 5px;
+	margin-top: 5px;
+	float: right;
+	border-radius: 5px;
+	cursor: pointer;
+}
+
+.new-chat-img-container, .my-img-container {
+	position: relative;
+	width: 60px;
+	height: 60px;
+	border-radius: 50%;
+	margin-right: 20px;
+	cursor: pointer;
+	overflow: hidden;
+}
+
+.new-chat-img, .my-img {
+	width: 100%;
+	height: 100%;
+}
+
+.new-chat-img-btn, .my-img-btn {
+	position: absolute;
+	bottom: 0;
+	left: 0;
+	width: 60px;
+	background-color: rgba(0, 0, 0, 0.7);
+	font-size: 11px;
+	text-align: center;
+	padding-top: 2px;
+}
+
+.logout-link {
+	position: absolute;
+	display: block;
+	bottom: 4px;
+	right: 4px;
+	color: blue;
+	text-decoration: none;
+	font-size: 14px;
+}
+
+.logout-link:hover {
+	text-decoration: underline;
 }

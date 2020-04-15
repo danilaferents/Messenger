@@ -19,6 +19,9 @@
 	<main>
 		<div class="main-content">
 			<div class="chats" id="chats">
+				<div class="new-chat-btn-container">
+					<button class="new-chat-btn">Создать канал</button>
+				</div>
 			</div>
 			<div class="messages">
 				<div class="all-messages" id="all-messages">
@@ -65,10 +68,33 @@
 	<div class="form-change" style="display: none;"><p>or <span data-form-id="login_form">Sign in</span></p></div>
 </div>
 <div id="my-modal">
-	<div class="my-header">
-		<div><img class="my-img" src="pics/dan.jpg"></div>
-		<div><div class="my-name" contenteditable="true">Danila</div></div>
-	</div>
+	<form class="my-form" action="" method="post">
+		<input type="file" name="avatar" accept="image/*" id="avatar" style="display: none;">
+		<div class="my-img-container">
+			<img class="my-img" src="pics/dan.jpg">
+			<div class="my-img-btn"><img src="pics/upload.svg" width="14"></div>
+		</div>
+		<div>
+			<input type="text" name="name" placeholder="Имя" value="Danila" required>
+			<br>
+			<input type="submit" value="Сохранить">
+		</div>
+	</form>
+	<a class="logout-link" href="#">Выйти</a>
+</div>
+<div id="new-chat-modal">
+	<form class="new-chat-form" action="" method="post">
+		<input type="file" name="avatar" accept="image/*" id="chat_avatar" style="display: none;">
+		<div class="new-chat-img-container">
+			<img class="new-chat-img" src="pics/dan.jpg">
+			<div class="new-chat-img-btn"><img src="pics/upload.svg" width="14"></div>
+		</div>
+		<div>
+			<input type="text" name="channelname" placeholder="Имя канала" required>
+			<br>
+			<input type="submit" value="Создать канал">
+		</div>
+	</form>
 </div>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
 <script src="js/modal.js"></script>
