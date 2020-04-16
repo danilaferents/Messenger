@@ -1,4 +1,29 @@
-$(document).ready(function () {
+$(document).ready(function() {
+    $.ajax({
+        url:      "php/isloged.php",
+        type:     "GET", 
+        dataType: "html", 
+        success: function(response) { 
+        	result = $.parseJSON(response);
+		if (result.status == "OK")
+		{
+			user = result.id;
+			LoadUserData(user);
+			LoadChanels();
+			StartRenovating();
+			setTimeout(RenovateUsersData, 60 * 1000, true);
+		}
+        	else
+		{
+			ShowLoginWindow();
+		}
+    	}
+ 	});
+});
+
+
+
+function ShowLoginWindow() {
 	var my_modal = $('#my-modal');
 	var new_chat_modal = $('#new-chat-modal');
 	$('#chat_avatar').on('change',  function() {
@@ -49,4 +74,4 @@ $(document).ready(function () {
 	$('.my-img, .my-img-btn').on('click', function() {
 		$('#avatar').trigger('click');
 	});
-});
+}

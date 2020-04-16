@@ -1,6 +1,7 @@
 <?php
 session_start();
 
+
 include_once("DatabaseConnection.php");
 if (isset($_POST['email'])) {
     $email = $_POST['email']; 
@@ -18,17 +19,7 @@ if (isset($_POST['password'])) {
 }
  
 
-//$email = stripslashes($email);
-//$email = htmlspecialchars($email);
- 
-//$password = stripslashes($password);
-//$password = htmlspecialchars($password);
- 
- 
-//$email = trim($email);
-//$password = trim($password);
- 
-//$password = md5($password);
+
 
 $pdo = new DatabaseConnection();
 $conn = $pdo->connection();
@@ -38,6 +29,7 @@ $id_user = $user->fetch_array(MYSQLI_ASSOC);
 
 
 if (empty($id_user['id'])){
+    session_write_close();
     $result = array(
     	'status' => "NOT OK",
     	'url' => "",

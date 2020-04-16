@@ -24,6 +24,8 @@ function check_user($id)
 	}
 	else
 	{
+		echo $_SESSION["password"];
+		echo $_SESSION["email"];
 		echo "User is not verificated ";
 		return false;
 	}
