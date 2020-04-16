@@ -1,4 +1,3 @@
-
 <?php
 include_once("DatabaseConnection.php");
 include_once("check_user.php");

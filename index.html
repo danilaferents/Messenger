@@ -83,16 +83,16 @@
 	<a class="logout-link" href="#">Выйти</a>
 </div>
 <div id="new-chat-modal">
-	<form class="new-chat-form" action="" method="post">
+	<form id="new_chanel_from" class="new-chat-form" action="" method="post">
 		<input type="file" name="avatar" accept="image/*" id="chat_avatar" style="display: none;">
 		<div class="new-chat-img-container">
 			<img class="new-chat-img" src="pics/dan.jpg">
 			<div class="new-chat-img-btn"><img src="pics/upload.svg" width="14"></div>
 		</div>
 		<div>
-			<input type="text" name="channelname" placeholder="Имя канала" required>
+			<input type="text" name="chanelname" placeholder="Имя канала" id="chanelname" required>
 			<br>
-			<input type="submit" value="Создать канал">
+			<input type="submit" value="Создать канал" id="createchanel">
 		</div>
 	</form>
 </div>

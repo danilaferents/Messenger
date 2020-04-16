@@ -12,10 +12,6 @@ let users_info = {};
 let all_messages = {};
 let chanels_list;
 
-//LoadUserData(user);
-//LoadChanels();
-//StartRenovating();
-//setTimeout(RenovateUsersData, 60 * 1000, true);
 
 
 function LoadUserData(cur_user){
@@ -76,11 +72,12 @@ function StartRenovating(){
     xhttp.onreadystatechange = function() {
     if (this.readyState == 4 && this.status == 200) {
 		answer = JSON.parse(this.responseText);
-		last_syn = answer.time;
+		last_syn = answer["time"];
 		RenovateMessages(true);
+		ChanelRenovate(true);
 	}
   };
-  xhttp.open("GET", "php/get_last_message_time.php?id="+user, true);
+  xhttp.open("GET", "php/get_last_syn_time.php?id="+user, true);
   xhttp.send();
 }
 
@@ -189,7 +186,9 @@ function PickChanel(item) {
 	item.className = "chat active";
 	CleanMessages();
 	chanel = item.id;
-	LoadMessages(chanel);
+	if (all_messages.hasOwnProperty(chanel)){
+		ShowMessages(all_messages[chanel]);
+	}
 }
 
 
@@ -197,6 +196,7 @@ function LoadChanels() {
   var xhttp = new XMLHttpRequest();
   xhttp.onreadystatechange = function() {
   if (this.readyState == 4 && this.status == 200) {
+		console.log(this.responseText);
 		arr = JSON.parse(this.responseText);
 		ShowChanels(arr);
 		//console.log(document.getElementsByClassName("chat")[0]);
@@ -207,7 +207,7 @@ function LoadChanels() {
 		LoadAllMessages();
 	}
   };
-  xhttp.open("GET", "php/load_chanels.php?id="+user, true);
+  xhttp.open("GET", "php/load_chanels.php?id="+user+"&syn=", true);
   xhttp.send();
 
 }
@@ -250,7 +250,13 @@ function UpdateMessages(arr){
 		    RenovateChanelInfo(element);
 		    //console.log(element);
                     var th_chanel = element.chanel;
-		    all_messages[th_chanel].push(element);	
+		    if (all_messages.hasOwnProperty(th_chanel)){
+		    	all_messages[th_chanel].push(element);	
+		    }
+		    else
+		    {
+			all_messages[th_chanel] = element;
+		    }
 		    if (chanel == th_chanel){
 			 elements_to_show.push(element);
 			 
@@ -269,6 +275,52 @@ function ShowMessages(arr){
 		MakeMessage(id, arr[i].text, arr[i].created);
 		LoadUserData_callback(id, arr[i].senderid, UpdateMessage);
         }
+}
+
+
+function CreateChanel(){
+  var str = document.getElementById("chanelname").innerHTML;
+  if (str=="")
+  {
+	document.getElementById("chanelcreateerror").innerHTML = "Need to enter chanel name";
+	return;
+  }
+  str = encodeURIComponent(str);
+  var xhttp = new XMLHttpRequest();
+  xhttp.onreadystatechange = function() {
+    if (this.readyState == 4 && this.status == 200) {
+         //RenovateMessages(false);
+    }
+  };
+  xhttp.open("GET", "php/create_chanel.php?&ch="+chanel+"&id="+user+"&av="+ch_avatar, true);
+  xhttp.send();
+}
+
+
+function ChanelRenovate(renovate_again){
+    if (last_syn == "")
+    {
+	setTimeout(ChanelRenovate, 100, true);
+	return;
+    }
+    var xhttp = new XMLHttpRequest();
+    xhttp.onreadystatechange = function() {
+    if (this.readyState == 4 && this.status == 200) {
+		arr = JSON.parse(this.responseText);
+		if (arr.length > 0)
+		{
+			SetLastSynTime(arr[0]);
+			ShowChanels(arr);
+			//Array.from(arr).forEach((element) => LoadMessages(element['id']));
+		}
+		if (renovate_again)
+		{
+			setTimeout(ChanelRenovate, 100, true);
+		}
+	}
+  };
+  xhttp.open("GET", "php/load_chanels.php?syn="+last_syn+"&id="+user, true);
+  xhttp.send();
 }
 
 
@@ -342,12 +394,12 @@ function UpdateChanel_last_sender(id, sender){
 function LoadUserData_callback_for_chanel_sender(chanel_id, sender_id, callback){
     if (users_info.hasOwnProperty(sender_id))
     {
-	console.log('here1');
-	console.log(typeof users_info[sender_id]);
+	//console.log('here1');
+	//console.log(typeof users_info[sender_id]);
 	if (users_info[sender_id] instanceof XMLHttpRequest)
 	{
-		console.log('here2');
-		console.log(users_info[sender_id]);
+		//console.log('here2');
+		//console.log(users_info[sender_id]);
 		users_info[sender_id].addEventListener('readystatechange',  function() {
    	 		if (this.readyState == 4 && this.status == 200) {
 				answer = JSON.parse(this.responseText);
@@ -358,7 +410,7 @@ function LoadUserData_callback_for_chanel_sender(chanel_id, sender_id, callback)
 	}
 	else
 	{
-		console.log('here3');
+		//console.log('here3');
 		callback(chanel_id, users_info[sender_id].name + " " + users_info[sender_id].surname);
 	}
     }

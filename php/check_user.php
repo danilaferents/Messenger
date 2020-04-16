@@ -1,6 +1,4 @@
 <?php
-
-
 function check_user($id)
 {
 	session_start();

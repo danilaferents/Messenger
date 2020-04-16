@@ -1,25 +1,10 @@
-//function StartRegistration() {
-//  document.getElementById("login_form").style.display = "none";
-//  document.getElementById("reg_form").style.display = "block";
-//  document.getElementById("button_to_reg").style.display = "none";
-//  document.getElementById("button_to_log").style.display = "block";
-//  document.getElementById("error").innerHTML = "";
-//}
-
-//function StartLogin() {
-//  document.getElementById("login_form").style.display = "block";
-//  document.getElementById("reg_form").style.display = "none";
-//  document.getElementById("button_to_reg").style.display = "block";
-//  document.getElementById("button_to_log").style.display = "none";
-//  document.getElementById("error").innerHTML = "";
-//}
 
 $(document).ready(function() {
     $("#log").click(
 		function(e){
 			if (login_form.checkValidity())
 			{
-			sendAjaxForm('result_form', 'login_form', 'php/login.php');
+			sendAjaxForm('error', 'login_form', 'php/login.php');
 			return false; 
 			}
 		}
@@ -31,7 +16,7 @@ $(document).ready(function() {
 		    {
 			if (document.forms["reg_form"].elements["password"].value == document.forms["reg_form"].elements["rep_password"].value){
 
-				sendAjaxForm('result_form', 'reg_form', 'php/registration.php');
+				sendAjaxForm('error', 'reg_form', 'php/registration.php');
 				return false;
 			}
 			else {
@@ -41,9 +26,18 @@ $(document).ready(function() {
 		    }
 		}
 	);
+  $("#createchanel").click(
+		function(e){
+			if (new_chanel_from.checkValidity())
+			{
+				sendAjaxForm_with_id('createchanelerror', 'new_chanel_from', 'php/create_chanel.php');
+				return false; 
+			}
+		}
+	);
 });
  
-function sendAjaxForm(result_form, ajax_form, url) {
+function sendAjaxForm(error_form, ajax_form, url) {
     $.ajax({
         url:      url,
         type:     "POST", 
@@ -62,11 +56,35 @@ function sendAjaxForm(result_form, ajax_form, url) {
 		}
         	else
 		{
-			$('#error').html(result.msg);
+			$('#error_form').html(result.msg);
 		}
     	},
     	error: function(response) { 
-            $('#error').html('Ошибка. Данные не отправлены.');
+            $('#error_form').html('Ошибка. Данные не отправлены.');
+    	}
+ 	});
+}
+
+function sendAjaxForm_with_id(error_form, ajax_form, url) {
+    $.ajax({
+        url:      url,
+        type:     "POST", 
+        dataType: "html", 
+        data: $("#"+ajax_form).serialize() + "&id=" + user, 
+        success: function(response) { 
+        	result = $.parseJSON(response);
+		if (result.status == "OK")
+		{
+			//window.alert(result.url);
+
+		}
+        	else
+		{
+			$('#error_form').html(result.msg);
+		}
+    	},
+    	error: function(response) { 
+            $('#error_form').html('Ошибка. Данные не отправлены.');
     	}
  	});
 }

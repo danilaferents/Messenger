@@ -1,4 +1,3 @@
-
 <?php
 include_once("DatabaseConnection.php");
 include_once("check_user.php");
@@ -13,10 +12,47 @@ if (!check_user($user))
 $pdo = new DatabaseConnection();
 $conn = $pdo->connection();
 
+if (isset($_GET['syn'])) {
+    $syn = $_GET['syn']; 
+}
+else
+{
+	exit ("Неопознана дата синхронизации!");
+}
 
-$query = "SELECT id, chanelavatar, chanelname FROM chanels";
 
-$result = $conn->query($query);
+if ($syn == "")
+{
+	$query = "SELECT id, chanelavatar, chanelname, created FROM chanels order by created desc";
+	$time_wait = 0;
+	$result = $conn->query($query);
+	while ($result->num_rows == 0)
+	{
+		usleep(100000);
+		$time_wait += 0.1;
+		$result = $conn->query($query);
+		if ($time_wait > 10)
+		{
+			break;
+		}
+	}
+}
+else
+{
+	$query = $query = "SELECT id, chanelavatar, chanelname, created FROM chanels where created > '$syn' order by created desc";
+	$time_wait = 0;
+	$result = $conn->query($query);
+	while ($result->num_rows == 0)
+	{
+		usleep(100000);
+		$time_wait += 0.1;
+		$result = $conn->query($query);
+		if ($time_wait > 10)
+		{
+			break;
+		}
+	}
+}
 
 if (!$result) {
     $message  = 'Неверный запрос: ' . "\n";
