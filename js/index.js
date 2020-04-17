@@ -173,6 +173,13 @@ function CleanMessages(){
 }
 
 
+function CleanChanels(){
+	parent = document.getElementById('chats');
+	arr = document.getElementsByClassName("chat");
+	Array.from(arr).forEach((element) => parent.removeChild(element))
+}
+
+
 function PickFirstChanel(){
 	var element = document.getElementsByClassName("chat")[0];
 	element.className = "chat active";
@@ -479,5 +486,8 @@ function SendMessage() {
   xhttp.open("GET", "php/send_message.php?mes="+str+"&ch="+chanel+"&id="+user, true);
   xhttp.send();
 }
+
+
+
 
 

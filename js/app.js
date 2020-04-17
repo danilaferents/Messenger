@@ -15,15 +15,32 @@ $(document).ready(function() {
 		}
         	else
 		{
-			ShowLoginWindow();
+			$('#login-modal').bPopup();
 		}
     	}
  	});
 });
 
 
+function Exit(){
+   $('#my-modal').bPopup().close();
+   var xhttp = new XMLHttpRequest();
+   xhttp.onreadystatechange = function() {
+    if (this.readyState == 4 && this.status == 200) {
+	   users_info = {};
+	   all_messages = {};
+	   chanels_list = [];
+	   CleanMessages();
+	   CleanChanels();
+         $('#login-modal').bPopup();
+    }
+  };
+  xhttp.open("GET", "php/exit.php?&id="+user, true);
+  xhttp.send();
+}
 
-function ShowLoginWindow() {
+
+$(document).ready(function() {
 	var my_modal = $('#my-modal');
 	var new_chat_modal = $('#new-chat-modal');
 	$('#chat_avatar').on('change',  function() {
@@ -40,7 +57,7 @@ function ShowLoginWindow() {
 		};
 		reader.readAsDataURL(this.files[0]);
 	});
-	$('#login-modal').bPopup();
+	//$('#login-modal').bPopup();
 	$('.form-change span').on('click', function() {
 		$(this).parent().parent().prev().hide();
 		$(this).parent().parent().hide();
@@ -74,4 +91,4 @@ function ShowLoginWindow() {
 	$('.my-img, .my-img-btn').on('click', function() {
 		$('#avatar').trigger('click');
 	});
-}
+});
