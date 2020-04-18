@@ -27,7 +27,7 @@ function LoadUserData(cur_user){
 				phone = answer.phone;
 				avatar = answer.avatar;
 				users_info[cur_user] = answer;
-				SetUserData(user_name, avatar);
+				SetUserData(user_name, user_surname, avatar);
 			}
  	 	});
 	}
@@ -37,7 +37,7 @@ function LoadUserData(cur_user){
 		user_surname = users_info[cur_user].surname;
 		phone = users_info[cur_user].phone;
 		avatar = users_info[cur_user].avatar;
-		SetUserData(user_name, avatar);
+		SetUserData(user_name, user_surname, avatar);
 	}
     }
     else
@@ -55,7 +55,7 @@ function LoadUserData(cur_user){
      			if (avatar === null){
 				avatar = "pics/users_avatars/noavatar.jpg";
      			}
-			SetUserData(user_name, avatar);
+			SetUserData(user_name, user_surname, avatar);
 		}
 
   	};
@@ -63,16 +63,24 @@ function LoadUserData(cur_user){
   	xhttp.send();
      }
 
-     console.log(avatar);
+     //console.log(avatar);
 }
 
+
+function ReloadActiveChanel(){
+	var id = document.getElementsByClassName("chat active")[0].id;
+	CleanMessages();	
+	ShowMessages(all_messages[id]);
+}
 
 function StartRenovating(){
     var xhttp = new XMLHttpRequest();
     xhttp.onreadystatechange = function() {
     if (this.readyState == 4 && this.status == 200) {
 		answer = JSON.parse(this.responseText);
-		last_syn = answer["time"];
+		if (answer.hasOwnProperty('time')){
+			last_syn = answer["time"];
+		}
 		RenovateMessages(true);
 		ChanelRenovate(true);
 	}
@@ -90,9 +98,12 @@ function LoadAllMessages()
 }
 
 
-function SetUserData(cur_user_name, cur_avatar){
+function SetUserData(cur_user_name, cur_user_surname, cur_avatar){
 	document.getElementsByClassName("profile-name")[0].textContent = cur_user_name;
 	document.getElementsByClassName("author-avatar")[0].childNodes[0].src = cur_avatar;
+	document.getElementById("username").value = cur_user_name;
+	document.getElementById("usersurname").value = cur_user_surname;
+	document.getElementsByClassName("my-img")[0].src = cur_avatar;
 }
 
 
@@ -203,7 +214,7 @@ function LoadChanels() {
   var xhttp = new XMLHttpRequest();
   xhttp.onreadystatechange = function() {
   if (this.readyState == 4 && this.status == 200) {
-		console.log(this.responseText);
+		//console.log(this.responseText);
 		arr = JSON.parse(this.responseText);
 		ShowChanels(arr);
 		//console.log(document.getElementsByClassName("chat")[0]);
@@ -286,21 +297,117 @@ function ShowMessages(arr){
 
 
 function CreateChanel(){
-  var str = document.getElementById("chanelname").innerHTML;
+  var str = document.getElementById("chanelname").value;
   if (str=="")
   {
-	document.getElementById("chanelcreateerror").innerHTML = "Need to enter chanel name";
+	console.log("empty chanel name");
+	//document.getElementById("chanelcreateerror").innerHTML = "Need to enter chanel name";
 	return;
   }
-  str = encodeURIComponent(str);
-  var xhttp = new XMLHttpRequest();
-  xhttp.onreadystatechange = function() {
-    if (this.readyState == 4 && this.status == 200) {
-         //RenovateMessages(false);
-    }
-  };
-  xhttp.open("GET", "php/create_chanel.php?&ch="+chanel+"&id="+user+"&av="+ch_avatar, true);
-  xhttp.send();
+
+  var fd = new FormData();
+  if ($('#newchanelavatar_load')[0] != undefined){
+  	var files = $('#newchanelavatar_load')[0].files[0];
+  }
+  else
+  {
+	console.log("empty chanel avatar");
+	var files = "";
+  }
+  //console.log("files: ");
+ //console.log(files);
+  fd.append('file',files);
+  fd.append('id', user);
+  fd.append('chanelname', str);
+  //console.log(str);
+  //document.getElementById("chanelcreateerror").innerHTML = "Creating Channel....";
+	$.ajax({
+	url:      "php/create_chanel.php",
+	type:     "POST", 
+	data: 	  fd,
+    	processData: false,
+    	contentType: false,
+	success: function(response) { 
+		result = $.parseJSON(response);
+		if (result.status == "OK")
+		{
+			$('#new-chat-modal').bPopup().close();
+		}
+        	else
+		{
+			document.getElementById("chanelcreateerror").innerHTML = result.msg;
+		}
+
+	},
+	error: function() {
+		document.getElementById("chanelcreateerror").innerHTML = "Chheck your Internet Connection";
+	}
+	});
+}
+
+
+function ChangeUserData(){
+  var name = document.getElementById("username").value;
+  if (name=="")
+  {
+	console.log("empty name");
+	//document.getElementById("userchangeerror").innerHTML = "Need to enter name";
+	return;
+  }
+  var surname = document.getElementById("usersurname").value;
+  if (surname=="")
+  {
+	console.log("empty surname");
+	//document.getElementById("userchangeerror").innerHTML = "Need to enter surname";
+	return;
+  }
+  var fd = new FormData();
+  if ($('#avatar_load')[0] != undefined){
+  	var files = $('#avatar_load')[0].files[0];
+  }
+  else
+  {
+	console.log("empty chanel avatar");
+	var files = "";
+  }
+  fd.append('file',files);
+  fd.append('id', user);
+  fd.append('name', name);
+  fd.append('surname', surname);
+  //document.getElementById("userchangeerror").innerHTML = "Creating Channel....";
+	$.ajax({
+	url:      "php/change_user_data.php",
+	type:     "POST", 
+	data: 	  fd,
+    	processData: false,
+    	contentType: false,
+	success: function(response) { 
+		result = $.parseJSON(response);
+		if (result.status == "OK")
+		{
+			user_name = name;
+			user_surname = surname;
+			avatar = result.avatar;
+     			if (avatar == undefined){
+				avatar = "pics/users_avatars/noavatar.jpg";
+     			}
+			users_info[user].avatar = avatar;
+			users_info[user].name = user_name;
+			users_info[user].surname = user_surname;
+			$('#my-modal').bPopup().close();
+			SetUserData(name, surname, avatar);
+			ReloadActiveChanel();
+		}
+        	else
+		{
+			document.getElementById("userchangeerror").innerHTML = result.msg;
+		}
+
+	},
+	error: function() {
+		document.getElementById("userchangeerror").innerHTML = "Check your Internet Connection";
+	}
+	});
 }
 
 

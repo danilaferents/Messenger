@@ -68,16 +68,18 @@
 	<div class="form-change" style="display: none;"><p>or <span data-form-id="login_form">Sign in</span></p></div>
 </div>
 <div id="my-modal">
-	<form class="my-form" action="" method="post">
+	<form class="my-form" action="" method="post" id="user_data_changes_form" enctype="multipart/form-data">
 		<input type="file" name="avatar" accept="image/*" id="avatar" style="display: none;">
 		<div class="my-img-container">
 			<img class="my-img" src="pics/dan.jpg">
-			<div class="my-img-btn"><img src="pics/upload.svg" width="14"></div>
+			<div class="my-img-btn"><img src="pics/upload.png" width="14"></div>
 		</div>
 		<div>
-			<input type="text" name="name" placeholder="Имя" value="Danila" required>
+			<input type="file" id="avatar_load" name="avatar_load"/>
+			<input type="text" name="name" id="username" placeholder="Имя" value="" required>
+			<input type="text" name="surname" id="usersurname" placeholder="Фамилия" value="" required>
 			<br>
-			<input type="submit" value="Сохранить">
+			<input type="submit" id="safe_user_data_changes" value="Сохранить">
 		</div>
 	</form>
 	<a class="logout-link" href="#" onclick="Exit()">Выйти</a>
@@ -86,10 +88,11 @@
 	<form id="new_chanel_from" class="new-chat-form" action="" method="post">
 		<input type="file" name="avatar" accept="image/*" id="chat_avatar" style="display: none;">
 		<div class="new-chat-img-container">
-			<img class="new-chat-img" src="pics/dan.jpg">
-			<div class="new-chat-img-btn"><img src="pics/upload.svg" width="14"></div>
+			<img class="new-chat-img">
+			<div class="new-chat-img-btn"><img id="newchanelavatar" src="pics/upload.png" width="14"></div>
 		</div>
 		<div>
+			<input type="file" id="newchanelavatar_load" name="newchanelavatar_load"/>
 			<input type="text" name="chanelname" placeholder="Имя канала" id="chanelname" required>
 			<br>
 			<input type="submit" value="Создать канал" id="createchanel">

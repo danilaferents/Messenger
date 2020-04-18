@@ -27,13 +27,22 @@ $(document).ready(function() {
 		}
 	);
   $("#createchanel").click(
-		function(e){
-			if (new_chanel_from.checkValidity())
-			{
-				sendAjaxForm_with_id('createchanelerror', 'new_chanel_from', 'php/create_chanel.php');
-				return false; 
+			function(e){
+				if (new_chanel_from.checkValidity())
+		    		{
+					CreateChanel();
+				}
+				return false;
 			}
-		}
+	);
+  $("#safe_user_data_changes").click(
+			function(e){
+				if (user_data_changes_form.checkValidity())
+		    		{
+					ChangeUserData();
+				}
+				return false;
+			}
 	);
 });
  
