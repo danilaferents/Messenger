@@ -240,9 +240,12 @@ function RenovateMessages(renovate_again) {
 	return;
     }
     //console.log(last_syn);
+    var cur_user = user;
     var xhttp = new XMLHttpRequest();
     xhttp.onreadystatechange = function() {
     if (this.readyState == 4 && this.status == 200) {
+		if (cur_user != user)
+		{return;}
 		arr = JSON.parse(this.responseText);
 		if (arr.length > 0)
 		{
@@ -391,6 +394,7 @@ function ChangeUserData(){
      			if (avatar == undefined){
 				avatar = "pics/users_avatars/noavatar.jpg";
      			}
+			users_info[user] = {};
 			users_info[user].avatar = avatar;
 			users_info[user].name = user_name;
 			users_info[user].surname = user_surname;
@@ -417,9 +421,12 @@ function ChanelRenovate(renovate_again){
 	setTimeout(ChanelRenovate, 100, true);
 	return;
     }
+    var cur_user = user;
     var xhttp = new XMLHttpRequest();
     xhttp.onreadystatechange = function() {
     if (this.readyState == 4 && this.status == 200) {
+		if (cur_user != user)
+		{return;}
 		arr = JSON.parse(this.responseText);
 		if (arr.length > 0)
 		{
@@ -463,7 +470,7 @@ function MakeMessage(id, text, date)
     .addClass("msg-content").html('<pre>'+text+'</pre>');
    var msgtext = $('<div/>')
     .addClass("msg-text").append(el_sender).append(el_text);
-   var avatar = $('<div/>').addClass("avatar").append($('<img/>', { src: "pics/noavatar.jpg" }));
+   var avatar = $('<div/>').addClass("avatar").append($('<img/>', { src: "pics/users_avatars/noavatar.jpg" }));
    var msg = $('<div/>').addClass("msg").append(avatar).append(msgtext);
    msg.append($('<div/>').addClass("msg-date").append($('<p/>').text(date)));
    var result = $('<div/>')
@@ -549,7 +556,7 @@ function MakeChanel(id, lastsender, lasttext, lasttime, chanelavatar, chanelname
 { 
    if (chanelavatar == null)
    { 
-	chanelavatar = "pics/nochanelavatar.jpg";
+	chanelavatar = "pics/chanels_avatars/nochanelavatar.jpg";
    }
    var chat_logo = $('<div/>').addClass("chat-logo").append($('<img/>', { src: chanelavatar }));	
    var chat_text = $('<div/>').addClass("chat-text").append($('<div/>').addClass("chat-name").text(chanelname));
