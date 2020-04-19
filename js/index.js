@@ -460,7 +460,7 @@ function MakeMessage(id, text, date)
     .addClass("username")
       .text("sender").css("color", "lightblue");
    var el_text = $('<div/>')
-    .addClass("msg-content").html(text);
+    .addClass("msg-content").html('<pre>'+text+'</pre>');
    var msgtext = $('<div/>')
     .addClass("msg-text").append(el_sender).append(el_text);
    var avatar = $('<div/>').addClass("avatar").append($('<img/>', { src: "pics/noavatar.jpg" }));
@@ -577,21 +577,25 @@ function RenovateUsersData(recursive){
 
 
 function SendMessage() {
-  var str = document.getElementById("write-form").innerHTML;
-  if (str=="")
-  {
-	return;
-  }
-  str = encodeURIComponent(str);
-  document.getElementById("write-form").innerHTML = "";
-  var xhttp = new XMLHttpRequest();
-  xhttp.onreadystatechange = function() {
-    if (this.readyState == 4 && this.status == 200) {
-         //RenovateMessages(false);
-    }
-  };
-  xhttp.open("GET", "php/send_message.php?mes="+str+"&ch="+chanel+"&id="+user, true);
-  xhttp.send();
+	document.getElementsByClassName("send-button-parent")[0].children[0].style.width = "70%";
+	setTimeout(function(){
+		document.getElementsByClassName("send-button-parent")[0].children[0].style.width = "80%";
+	}, 100);
+  	var str = document.getElementById("write-form").value;
+	  if (str=="")
+	  {
+		return;
+	  }
+	  str = encodeURIComponent(str);
+	  document.getElementById("write-form").value = "";
+	  var xhttp = new XMLHttpRequest();
+	  xhttp.onreadystatechange = function() {
+	    if (this.readyState == 4 && this.status == 200) {
+	         //RenovateMessages(false);
+	    }
+	  };
+	  xhttp.open("GET", "php/send_message.php?mes="+str+"&ch="+chanel+"&id="+user, true);
+	  xhttp.send();
 }
 
 

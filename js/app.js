@@ -15,7 +15,9 @@ $(document).ready(function() {
 		}
         	else
 		{
-			$('#login-modal').bPopup();
+			$('#login-modal').bPopup({
+				modalClose: false, opacity: 0.90
+			});
 		}
     	}
  	});
@@ -32,7 +34,9 @@ function Exit(){
 	   chanels_list = [];
 	   CleanMessages();
 	   CleanChanels();
-         $('#login-modal').bPopup();
+         $('#login-modal').bPopup({
+				modalClose: false, opacity: 0.90
+			});
     }
   };
   xhttp.open("GET", "php/exit.php?&id="+user, true);
