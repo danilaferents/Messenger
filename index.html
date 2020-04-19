@@ -99,6 +99,7 @@
 	</form>
 	<a class="logout-link" href="#" onclick="Exit()">Выйти</a>
 </div>
+
 <div id="new-chat-modal">
 	<form id="new_chanel_from" class="new-chat-form" action="" method="post">
 		<input type="file" name="avatar" accept="image/*" id="chat_avatar" style="display: none;">
@@ -114,6 +115,27 @@
 		</div>
 	</form>
 </div>
+
+<div id="new_user_modal">
+	<form id="new_user_form" class="new-user-form" action="" method="post">
+		<div style="width: calc(100%)">
+			<input type="text" name="email" placeholder="Введите email" id="email" required>
+			<br>
+			<input type="submit" value="Пригласить" id="adduser">
+		</div>
+	</form>
+</div>
+
+<div id="leave_channel_modal">
+	<form id="leave_channel_form" class="leave-channel-form" action="" method="post">
+		<div style="width: calc(100%)">
+			<div>Вы уверены?</div>
+			<input type="declay" value="Нет" id="no">
+			<input type="submit" value="Да" id="yes">
+		</div>
+	</form>
+</div>
+
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
 <script src="js/modal.js"></script>
 <script src="js/app.js"></script>

@@ -47,6 +47,8 @@ function Exit(){
 $(document).ready(function() {
 	var my_modal = $('#my-modal');
 	var new_chat_modal = $('#new-chat-modal');
+	var new_user_modal = $('#new_user_modal');
+	var leave_channel_modal = $('#leave_channel_modal');
 	$('#chat_avatar').on('change',  function() {
 		var reader = new FileReader();
 		reader.onload = function (e) {
@@ -88,6 +90,12 @@ $(document).ready(function() {
 	});
 	$('.new-chat-btn').on('click', function() {
 		new_chat_modal.bPopup();
+	});
+	$('.leave-chat-btn').on('click', function() {
+		leave_channel_modal.bPopup();
+	});
+	$('.add-user-to-chat-btn').on('click', function() {
+		new_user_modal.bPopup();
 	});
 	$('.new-chat-img, .new-chat-img-btn').on('click', function() {
 		$('#chat_avatar').trigger('click');
