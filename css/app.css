@@ -99,6 +99,7 @@ main {
 	width: 31%;
 	border-left: none;
 	border-right: 4px solid #fff;
+	overflow-y: auto;
 }
 
 .chat {
@@ -194,6 +195,18 @@ main {
 	color: #fff !important
 }
 
+.chats::-webkit-scrollbar {
+	width: 10px;
+}
+.chats::-webkit-scrollbar-track {
+	background-color: #383934;
+	border-radius: 2px;
+}
+.chats::-webkit-scrollbar-thumb {
+	background-color: #777876;
+	border-radius: 2px;
+}
+
 .messages {
 	width: 69%;
 	border-right: 1px solid #fff;
@@ -209,10 +222,37 @@ main {
 	flex-direction: column;
 	justify-content: space-between;
 }
-
+.btns-container {
+	position: relative;
+	display: flex;
+	flex-direction: row;
+	justify-content: space-between;
+	width: calc(100% - 32px);
+	padding: 7px 16px;
+}
+.leave-chat-btn {
+	width: auto;
+	height: 40px;
+	background-color: #8B0000;
+	font-size: 20px;
+	border: none;
+	border-radius: 5px;
+	cursor: pointer;
+	transition: .3s;
+}
+.add-user-to-chat-btn {
+	width: auto;
+	height: 40px;
+	background-color: #FF4500;
+	font-size: 20px;
+	border: none;
+	border-radius: 5px;
+	cursor: pointer;
+	transition: .3s;
+}
 .all-messages {
 	width: 100%;
-	max-height: calc(100% - 70px);
+	max-height: calc(100% - 124px);
 	overflow-y: auto;
 }
 
@@ -474,7 +514,6 @@ footer {
 	width: 100%;
 	max-width: 400px;
 	background-color: #fff;
-	min-height: 200px;
 }
 
 .my-header {
@@ -609,13 +648,139 @@ footer {
 .logout-link {
 	position: absolute;
 	display: block;
-	bottom: 4px;
+	top: 4px;
 	right: 4px;
-	color: blue;
+	color: white;
 	text-decoration: none;
 	font-size: 14px;
 }
 
 .logout-link:hover {
 	text-decoration: underline;
+}
+#footer 
+{	
+	display: block;
+	position: relative;
+	width: 100%;
+	max-width: 1010px;
+	height: 300px;
+	bottom: 0;
+	left: 0;
+	background-color: #5682a3;
+	margin: 0 auto;
+}
+
+#footerblock
+{
+	width: 950px;
+	height: 320px;
+	position: absolute;
+	display: flex;
+	justify-content: space-between;
+	left: 50%;
+	margin-left: -490px;
+	top: 25px;
+	/*border: 1px solid yellow;*/
+	color: white;
+	padding-top: 40px;
+	padding-left: 30px;
+}
+
+#footertext
+{
+	width: 450px;
+	height: 100%;
+	/*border: 1px solid yellow;*/
+	position: relative;
+	float: left;
+}
+
+#footercontacts
+{
+	width: 250px;
+	height: 100%;
+	/*border: 1px solid yellow;*/
+	position: relative;
+	
+	float: left;
+}
+
+#footercontactsp1
+{
+	margin-top: 30px;
+}
+
+#footercontactsp2, #footercontactsp3
+{
+	margin-top: 10px;
+}
+
+#footerlinks
+{
+	width: 250px;
+	height: 100%;
+	/*border: 1px solid yellow;*/
+	position: relative;
+	float: left;
+}
+
+#footerul
+{
+	position: absolute;
+	left: 0;
+	top: 30px;
+	list-style: none;
+	display: block;
+	margin-top: 30px;
+	z-index: 14;
+}
+
+.footerli
+{
+	float: left;
+	position: relative;
+	margin-left: 30px;
+	display: block;
+	width: 40px;
+	height: 40px;
+	transition: filter 0.2s;
+	color: #00aced;
+	cursor: pointer;
+	transition: color 0.3s;
+}
+
+#footercontacts p
+{
+	font-size: 20px;
+}
+
+#footercontacts strong
+{
+	font-size: 24px;
+	font-weight: bold;
+	color: lightblue;
+}
+
+i.fa
+{
+	font-size: 40px;
+}
+
+._title
+{
+	font-weight: bold;
+	font-size: 24px;
+	margin-top: 10px;
+	color: darkblue;
+}
+._title p
+{
+	text-align: justify;
+}
+
+._sub_title
+{
+	font-weight: bold;
+	margin-top: 10px;
 }

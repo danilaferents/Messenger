@@ -2,14 +2,15 @@
 <html lang="en">
 <head>
 	<meta charset="UTF-8">
-	<title>Test</title>
+	<title>FriendsZone</title>
+	<link rel="shortcut icon" href="pics/dan.jpg" type="image/jpeg">
 	<link href="https://fonts.googleapis.com/css2?family=Noto+Sans:ital,wght@0,400;0,700;1,400;1,700&display=swap" rel="stylesheet">
 	<link rel="stylesheet" href="css/app.css">
 </head>
 <body>
 	<header>
 		<div class="header-content">
-			<div class="header-text">FriendsZone</div>
+			<div class="header-text" style="margin-left: 10px;">FriendsZone</div>
 			<div class="header-profile">
 				<span class="profile-name">Danila</span>
 				<!-- <div class="profile-logo"><img src="pics/dan.jpg"></div> -->
@@ -24,24 +25,38 @@
 				</div>
 			</div>
 			<div class="messages">
+				<div class="btns-container">
+					<button class="leave-chat-btn">Покинуть канал</button>
+					<button class="add-user-to-chat-btn">Пригласить пользователя</button>
+				</div>
 				<div class="all-messages" id="all-messages">
 					
 				</div>
 				<div class="write-message">
 					<div class="write-block">
 						<div class="author-avatar"><img src="pics/dan.jpg"></div>
-						<div class="write-form" id="write-form" data-placeholder="Написать сообщение..." contenteditable="true"></div>
-						<div class="send-button-parent"><button class="send-button-child" onclick="SendMessage()">Send</button></div>
+						<textarea class="write-form" id="write-form" placeholder="Написать сообщение..."></textarea>
+						<div class="send-button-parent" onclick="SendMessage()"> <img src="pics/paper-plane.svg" style="width: 80%;margin-bottom: 12px" alt=""></div>
 					</div>
 				</div>
 			</div>
 		</div>
 	</main>
-	<footer>
-		<div class="footer-content">
-			<p>Всякая херь</p>
+	<div id="footer">
+		<div id="footerblock">
+			<div id="footertext">
+				<span style="font-size: 24px; font-weight: bold; color: lightblue;">О мессенджере:</span>
+				<p align="justify" style="margin-top: 30px; padding-right: 25px;">Данный мессенджер инициатива студентов математико-механического факультета Санкт-Петербургского государственного университета. В ближайшем будущем появится мобильный клиент.</p>
+			</div>
+			<div id="footercontacts">
+				<span style="font-size: 24px; font-weight: bold; color: lightblue; padding-bottom: 30px;">Связаться с нами:</span>
+				<p class="footercontactsp" id="footercontactsp1">Позвоните:</p>
+				<strong>+7 911 919 89 99</strong>
+				<p class="footercontactsp" id="footercontactsp3">E-mail</p>
+				<strong>denif99@mail.ru</strong>
+			</div>
 		</div>
-	</footer>
+	</div>
 <div id="login-modal">
 	<form action="" id="login_form" method="post">
 	  <fieldset>
@@ -74,8 +89,8 @@
 			<img class="my-img" src="pics/dan.jpg">
 			<div class="my-img-btn"><img src="pics/upload.svg" width="14"></div>
 		</div>
-		<div>
-			<input type="file" id="avatar_load" name="avatar_load"/>
+		<div style="width: calc(100% - 80px)">
+			<input type="file" id="avatar_load" name="avatar_load" style="display: none;">
 			<input type="text" name="name" id="username" placeholder="Имя" value="" required>
 			<input type="text" name="surname" id="usersurname" placeholder="Фамилия" value="" required>
 			<br>
@@ -88,11 +103,11 @@
 	<form id="new_chanel_from" class="new-chat-form" action="" method="post">
 		<input type="file" name="avatar" accept="image/*" id="chat_avatar" style="display: none;">
 		<div class="new-chat-img-container">
-			<img class="new-chat-img">
+			<img class="new-chat-img" src="pics/chanall.jpg">
 			<div class="new-chat-img-btn"><img id="newchanelavatar" src="pics/upload.svg" width="14"></div>
 		</div>
-		<div>
-			<input type="file" id="newchanelavatar_load" name="newchanelavatar_load"/>
+		<div style="width: calc(100% - 80px)">
+			<input type="file" id="newchanelavatar_load" name="newchanelavatar_load" style="display: none;">
 			<input type="text" name="chanelname" placeholder="Имя канала" id="chanelname" required>
 			<br>
 			<input type="submit" value="Создать канал" id="createchanel">

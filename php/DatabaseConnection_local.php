@@ -21,9 +21,9 @@ class DatabaseConnection
                 if(self::$con instanceof mysqli)
                     return self::$con;
 		$servername = "localhost";
-		$username = "u1018477_dima";
-		$password = "Day6siz";
-		$dbname = "u1018477_messanger";
+		$username = "root";
+		$password = "password";
+		$dbname = "wordpress";
 
 		// Create connection
 		$connection = new mysqli($servername, $username, $password, $dbname);
