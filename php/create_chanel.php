@@ -16,7 +16,7 @@ $conn = $pdo->connection();
 $query = "SELECT id FROM chanels WHERE chanelname='$chanelname'";
 $chanels = $conn->query($query);
 
-$chanel_file_name = "ch_avatar_" + $chanelname;
+$chanel_file_name = "ch_avatar_" . $chanelname;
 if ($chanels->num_rows > 0){
 	$result = array(
     	'status' => "NOT OK",
