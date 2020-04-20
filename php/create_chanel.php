@@ -81,7 +81,11 @@ if( !$conn->query($query))
 	exit("query error");
 	
 }
+$query = "SELECT id from chanels where chanelname = '$chanelname'";
+$query_result = $conn->$query->fetch_array(MYSQLI_ASSOC);
+$chanel_id = $query_result['id'];
 
+$query = "INSERT INTO chanels_users (chanel, user) VALUES ($chanel_id, $user)";
 $result = array(
     	'status' => "OK",
 	'msg' => ""

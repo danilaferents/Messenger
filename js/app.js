@@ -25,6 +25,7 @@ $(document).ready(function() {
 
 
 function Exit(){
+   user = "";
    $('#my-modal').bPopup().close();
    var xhttp = new XMLHttpRequest();
    xhttp.onreadystatechange = function() {

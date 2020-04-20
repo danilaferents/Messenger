@@ -86,6 +86,9 @@ else {
 	'msg' => ""	
     ); 
 }
+
+ $query3 = "INSERT INTO chanels_users (chanel, user) VALUES (1, $id_user['id'])" ;
+ $conn->query($query3);
  echo json_encode($result);
           
 

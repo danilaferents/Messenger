@@ -31,4 +31,18 @@ function check_user($id)
 	}
 }
 
+
+function is_user_in_chanel($id, $chanel)
+{
+	$query = "SELECT * FROM chanels_users WHERE user = $id and chanel = $chanel";
+	$result = $conn->query($query);
+	if ($result->num_rows > 0)
+	{
+		return true;
+	}
+	else
+	{
+		return false;
+	}
+}
 ?>

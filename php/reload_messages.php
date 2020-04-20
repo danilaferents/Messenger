@@ -14,7 +14,7 @@ $conn = $pdo->connection();
 
 if ($syn == "")
 {
-	$query = "SELECT id, senderid, text, created, content FROM messages order by created desc";
+	$query = "SELECT id, senderid, text, created, content FROM messages where chanel in (select chanel from chanels_users where user = $user) order by created desc";
 	$time_wait = 0;
 	$result = $conn->query($query);
 	while ($result->num_rows == 0)
@@ -30,7 +30,7 @@ if ($syn == "")
 }
 else
 {
-	$query = "SELECT id, senderid, text, created, content, chanel FROM messages where created > '$syn' order by created desc";
+	$query = "SELECT id, senderid, text, created, content, chanel FROM messages where created > '$syn' and chanel in (select chanel from chanels_users where user = $user) order by created desc";
 	$time_wait = 0;
 	$result = $conn->query($query);
 	while ($result->num_rows == 0)

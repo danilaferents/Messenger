@@ -14,6 +14,9 @@ if (!check_user($user))
 	echo "User is not verificated";
 	return;
 }
+if (!is_user_in_chanel){
+	exit("permission error");
+}
 $query = "SELECT id, senderid, text, created, content, chanel FROM messages where chanel = $chanel order by created desc limit 50";
 $time_wait = 0;
 $result = $conn->query($query);
