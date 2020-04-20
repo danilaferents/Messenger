@@ -30,6 +30,7 @@ function Exit(){
    var xhttp = new XMLHttpRequest();
    xhttp.onreadystatechange = function() {
     if (this.readyState == 4 && this.status == 200) {
+	   exit_time = Date.now();
 	   users_info = {};
 	   all_messages = {};
 	   chanels_list = [];
@@ -50,14 +51,14 @@ $(document).ready(function() {
 	var new_chat_modal = $('#new-chat-modal');
 	var new_user_modal = $('#new_user_modal');
 	var leave_channel_modal = $('#leave_channel_modal');
-	$('#chat_avatar').on('change',  function() {
+	$('#newchanelavatar_load').on('change',  function() {
 		var reader = new FileReader();
 		reader.onload = function (e) {
 	    	$(".new-chat-img")[0].src = e.target.result;
 		};
 		reader.readAsDataURL(this.files[0]);
 	});
-	$('#avatar').on('change',  function() {
+	$('#avatar_load').on('change',  function() {
 		var reader = new FileReader();
 		reader.onload = function (e) {
 	    	$(".my-img")[0].src = e.target.result;
@@ -99,9 +100,9 @@ $(document).ready(function() {
 		new_user_modal.bPopup();
 	});
 	$('.new-chat-img, .new-chat-img-btn').on('click', function() {
-		$('#chat_avatar').trigger('click');
+		$('#newchanelavatar_load').trigger('click');
 	});
 	$('.my-img, .my-img-btn').on('click', function() {
-		$('#avatar').trigger('click');
+		$('#avatar_load').trigger('click');
 	});
 });

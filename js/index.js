@@ -7,6 +7,7 @@ var phone = "";
 var avatar = "";
 var last_syn = "";
 var user_surname = "";
+var exit_time = "";
 
 let users_info = {};
 let all_messages = {};
@@ -239,11 +240,11 @@ function RenovateMessages(renovate_again) {
 	return;
     }
     //console.log(last_syn);
-    var cur_user = user;
+    var cur_exit_time = exit_time;
     var xhttp = new XMLHttpRequest();
     xhttp.onreadystatechange = function() {
     if (this.readyState == 4 && this.status == 200) {
-		if (cur_user != user)
+		if (cur_exit_time != exit_time)
 		{return;}
 		arr = JSON.parse(this.responseText);
 		if (arr.length > 0)
@@ -264,28 +265,38 @@ function RenovateMessages(renovate_again) {
 
 
 function LeaveChanel() {
-    var act_chanel = document.getElementsByClassName("active chanel")[0].id;
+    var act_chanel = document.getElementsByClassName("chat active")[0].id;
     var xhttp = new XMLHttpRequest();
     xhttp.onreadystatechange = function() {
     if (this.readyState == 4 && this.status == 200) {
 
 	}
   };
-  xhttp.open("GET", "php/leave_chanel.php?id="+user + "&ch" + act_chanel, true);
+  xhttp.open("GET", "php/leave_chanel.php?id="+user + "&ch=" + act_chanel, true);
   xhttp.send();
 }
 
 
 function Invite() {
-    var user_email = document.getElementsByClassName("new_user_form")[0].getElementById('email');
-    var act_chanel = document.getElementsByClassName("active chanel")[0].id;
+    var user_email = document.getElementById("new_user_email").value;
+    var act_chanel = document.getElementsByClassName("chat active")[0].id;
     var xhttp = new XMLHttpRequest();
     xhttp.onreadystatechange = function() {
     if (this.readyState == 4 && this.status == 200) {
-
+		  var msg = this.responseText;
+		  msg = msg.replace(/\s+/g,''); 
+		  //console.log(msg);
+		  if (msg == "OK")
+		  {
+			$('#new_user_modal').bPopup().close();
+		  }
+		  else
+		  {
+		 	document.getElementById("new_user_modal").getElementsByClassName('error')[0].innerHTML = msg;
+                  }
 	}
   };
-  xhttp.open("GET", "php/invite.php?inv="+user_email+"&id="+user + "&ch" + act_chanel, true);
+  xhttp.open("GET", "php/invite.php?inv="+user_email+"&id="+user + "&ch=" + act_chanel, true);
   xhttp.send();
 }
 
@@ -302,7 +313,7 @@ function UpdateMessages(arr){
 		    }
 		    else
 		    {
-			all_messages[th_chanel] = element;
+			all_messages[th_chanel] = [element];
 		    }
 		    if (chanel == th_chanel){
 			 elements_to_show.push(element);
@@ -349,7 +360,7 @@ function CreateChanel(){
   fd.append('id', user);
   fd.append('chanelname', str);
   //console.log(str);
-  //document.getElementById("chanelcreateerror").innerHTML = "Creating Channel....";
+  document.getElementsByClassName("error").innerHTML = "Creating Channel....";
 	$.ajax({
 	url:      "php/create_chanel.php",
 	type:     "POST", 
@@ -364,12 +375,12 @@ function CreateChanel(){
 		}
         	else
 		{
-			document.getElementById("chanelcreateerror").innerHTML = result.msg;
+			  document.getElementsByClassName("error").innerHTML = "Creating Channel....";
 		}
 
 	},
 	error: function() {
-		document.getElementById("chanelcreateerror").innerHTML = "Check your Internet Connection";
+		document.getElementsByClassName("error").innerHTML = "Check your Internet Connection";
 	}
 	});
 }
@@ -447,11 +458,11 @@ function ChanelRenovate(renovate_again){
 	setTimeout(ChanelRenovate, 100, true);
 	return;
     }
-    var cur_user = user;
+    var cur_exit_time = exit_time;
     var xhttp = new XMLHttpRequest();
     xhttp.onreadystatechange = function() {
     if (this.readyState == 4 && this.status == 200) {
-		if (cur_user != user)
+		if (cur_exit_time != exit_time)
 		{return;}
 		arr = JSON.parse(this.responseText);
 		if (arr.length > 0)

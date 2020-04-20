@@ -14,7 +14,7 @@ if (!check_user($user))
 	echo "User is not verificated";
 	return;
 }
-if (!is_user_in_chanel){
+if (!is_user_in_chanel($user, $chanel)){
 	exit("permission error");
 }
 

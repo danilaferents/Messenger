@@ -14,7 +14,7 @@ function check_user($id)
    		 die($message);
 	}
 	$user = $result->fetch_array(MYSQLI_ASSOC);
-	if ($user == NULL)
+	if ($result->num_rows == 0)
 	{
 		exit('No such user');
 	}
@@ -34,6 +34,8 @@ function check_user($id)
 
 function is_user_in_chanel($id, $chanel)
 {
+	$pdo = new DatabaseConnection();
+	$conn = $pdo->connection();
 	$query = "SELECT * FROM chanels_users WHERE user = $id and chanel = $chanel";
 	$result = $conn->query($query);
 	if ($result->num_rows > 0)

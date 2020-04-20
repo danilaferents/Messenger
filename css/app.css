@@ -142,15 +142,16 @@ main {
 
 .chat-text {
 	font-size: 13px;
-	max-width: calc(100% - 123px);
+	max-width: calc(100% - 60px);
+	margin-right: 20px;
 	white-space: nowrap;
 	overflow: hidden;
-	margin-right: 60px;
 }
 
 .chat-name {
 	color: #30deb2;
 	margin: 3px 0;
+	margin-right: 80px;
 	font-weight: 700;
 	overflow: hidden;
 	white-space: nowrap;
@@ -260,6 +261,7 @@ main {
 	width: 100%;
 	max-height: calc(100% - 124px);
 	overflow-y: auto;
+	height: 100%;
 }
 
 .all-messages::-webkit-scrollbar {
@@ -515,13 +517,18 @@ footer {
 	text-decoration: underline;
 }
 
-#my-modal, #new-chat-modal, #new_user_modal, #leave_channel_modal {
+#my-modal, #new-chat-modal, #new_user_modal {
 	display: none;
 	width: 100%;
 	max-width: 400px;
 	background-color: #fff;
 }
-
+ #leave_channel_modal {
+ 	display: none;
+	width: 100%;
+	max-width: 200px;
+	background-color: #fff;
+ }
 .my-header {
 	background-color: #5682a3;
 	display: -webkit-flex;
@@ -614,7 +621,7 @@ footer {
 	color: #ddd;
 }
 
- #leave_channel_modal input[type="declay"] {
+ .no {
  	background-color: #FF0000;
 	border: none;
 	font-size: 14px;
@@ -625,7 +632,7 @@ footer {
 	cursor: pointer;
  }
 
-#new-chat-modal input[type="submit"], #my-modal input[type="submit"], #new_user_modal input[type="submit"], #leave_channel_modal input[type="submit"] {
+#new-chat-modal input[type="submit"], #my-modal input[type="submit"], #new_user_modal input[type="submit"], .yes {
 	background-color: #249D06;
 	border: none;
 	font-size: 14px;

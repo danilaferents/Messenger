@@ -7,6 +7,11 @@ $(document).ready(function() {
 			sendAjaxForm('error', 'login_form', 'php/login.php');
 			return false; 
 			}
+			// else {
+			// 		alert('log');
+			// 		$('#log_form').find('.error').html('entered passwords do not match')
+			// 		return false;
+			// }
 		}
 	);
     $("#reg").click(
@@ -20,7 +25,9 @@ $(document).ready(function() {
 				return false;
 			}
 			else {
-                              $('#error').html('entered passwords do not match'); 
+					alert('reg');
+					// $('#reg_form').find('.error').html('entered passwords do not match')
+                              // $('#error').html('entered passwords do not match'); 
 				return false;         
                         }
 		    }
@@ -44,6 +51,24 @@ $(document).ready(function() {
 				return false;
 			}
 	);
+  $("#add_user").click(
+			function(e){
+				if (new_user_form.checkValidity())
+		    		{
+					Invite();
+				}
+				return false;
+			}
+	);
+  $("#chanel_leave_button").click(
+			function(e){
+				if (leave_channel_form_form.checkValidity())
+		    		{
+					LeaveChanel();
+				}
+				return false;
+			}
+	);
 });
  
 function sendAjaxForm(error_form, ajax_form, url) {
@@ -57,6 +82,7 @@ function sendAjaxForm(error_form, ajax_form, url) {
 		if (result.status == "OK")
 		{
 			//window.alert(result.url);
+			$('#login-modal').bPopup().close();
 			user = result.id;
 			LoadUserData(user);
 			LoadChanels();
