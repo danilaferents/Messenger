@@ -23,7 +23,7 @@ else
 
 if ($syn == "")
 {
-	$query = "SELECT id, chanelavatar, chanelname, created FROM chanels where chanel in (select chanel from chanels_users where user = $user) order by created desc";
+	$query = "SELECT id, chanelavatar, chanelname, created FROM chanels where id in (select chanel from chanels_users where user = $user) order by created desc";
 	$time_wait = 0;
 	$result = $conn->query($query);
 	while ($result->num_rows == 0)
@@ -39,7 +39,7 @@ if ($syn == "")
 }
 else
 {
-	$query = $query = "SELECT id, chanelavatar, chanelname, created FROM chanels where created > '$syn' and chanel in (select chanel from chanels_users where user = $user)order by created desc";
+	$query = $query = "SELECT id, chanelavatar, chanelname, created FROM chanels where created > '$syn' and id in (select chanel from chanels_users where user = $user)order by created desc";
 	$time_wait = 0;
 	$result = $conn->query($query);
 	while ($result->num_rows == 0)

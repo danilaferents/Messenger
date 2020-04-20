@@ -232,7 +232,6 @@ function LoadChanels() {
 
 
 function RenovateMessages(renovate_again) {
-    //console.log(last_syn);
     if (last_syn == "")
     {
 	//console.log("promlems228");
@@ -260,6 +259,33 @@ function RenovateMessages(renovate_again) {
 	}
   };
   xhttp.open("GET", "php/reload_messages.php?syn="+last_syn+"&id="+user, true);
+  xhttp.send();
+}
+
+
+function LeaveChanel() {
+    var act_chanel = document.getElementsByClassName("active chanel")[0].id;
+    var xhttp = new XMLHttpRequest();
+    xhttp.onreadystatechange = function() {
+    if (this.readyState == 4 && this.status == 200) {
+
+	}
+  };
+  xhttp.open("GET", "php/leave_chanel.php?id="+user + "&ch" + act_chanel, true);
+  xhttp.send();
+}
+
+
+function Invite() {
+    var user_email = document.getElementsByClassName("new_user_form")[0].getElementById('email');
+    var act_chanel = document.getElementsByClassName("active chanel")[0].id;
+    var xhttp = new XMLHttpRequest();
+    xhttp.onreadystatechange = function() {
+    if (this.readyState == 4 && this.status == 200) {
+
+	}
+  };
+  xhttp.open("GET", "php/invite.php?inv="+user_email+"&id="+user + "&ch" + act_chanel, true);
   xhttp.send();
 }
 
@@ -343,7 +369,7 @@ function CreateChanel(){
 
 	},
 	error: function() {
-		document.getElementById("chanelcreateerror").innerHTML = "Chheck your Internet Connection";
+		document.getElementById("chanelcreateerror").innerHTML = "Check your Internet Connection";
 	}
 	});
 }
