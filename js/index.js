@@ -269,13 +269,22 @@ function LeaveChanel() {
     var xhttp = new XMLHttpRequest();
     xhttp.onreadystatechange = function() {
     if (this.readyState == 4 && this.status == 200) {
+		DeleteChanel(act_chanel);
 		$('#leave_channel_modal').bPopup().close();
-		CleanChanels();
-		LoadChanels();	
 	}
   };
   xhttp.open("GET", "php/leave_chanel.php?id="+user + "&ch=" + act_chanel, true);
   xhttp.send();
+}
+
+
+function DeleteChanel(id){
+	var parent = document.getElementsByClassName("chats")[0];
+	var child = document.getElementById(id);
+	parent.removeChild(child);
+	PickFirstChanel();
+	var act_id = document.getElementsByClassName("chat active")[0].id;
+	ShowMessages(all_messages[act_id]);
 }
 
 
@@ -639,6 +648,7 @@ function SendMessage() {
 	  };
 	  xhttp.open("GET", "php/send_message.php?mes="+str+"&ch="+chanel+"&id="+user, true);
 	  xhttp.send();
+	  document.getElementById("write-form").focus();
 }
 
 

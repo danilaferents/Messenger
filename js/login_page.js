@@ -69,6 +69,19 @@ $(document).ready(function() {
 				return false;
 			}
 	);
+  $("#chanel_not_leave_button").click(
+			function(e){
+				$('#leave_channel_modal').bPopup().close();
+				return false;
+			}
+	);
+  $("#write-form").keypress(
+			function(e){
+				if(e.which == 13 && !e.shiftKey) {
+					SendMessage();
+				}	
+			}
+	);
 });
  
 function sendAjaxForm(error_form, ajax_form, url) {

@@ -15,6 +15,7 @@ $(document).ready(function() {
 		}
         	else
 		{
+			$('#login_error').innerHTML = "";
 			$('#login-modal').bPopup({
 				modalClose: false, opacity: 0.90
 			});
@@ -36,6 +37,7 @@ function Exit(){
 	   chanels_list = [];
 	   CleanMessages();
 	   CleanChanels();
+	 document.getElementById('login_error').innerHTML = "";
          $('#login-modal').bPopup({
 				modalClose: false, opacity: 0.90
 			});
@@ -92,6 +94,7 @@ $(document).ready(function() {
 		}
 	});
 	$('.new-chat-btn').on('click', function() {
+		document.getElementById("chanel_create_error").innerHTML = "";
 		new_chat_modal.bPopup();
 	});
 	$('.leave-chat-btn').on('click', function() {
@@ -102,7 +105,7 @@ $(document).ready(function() {
 		new_user_modal.bPopup();
 	});
 	$('.new-chat-img, .new-chat-img-btn').on('click', function() {
-		document.getElementById("chanel_create_error").innerHTML = "";
+		//document.getElementById("chanel_create_error").innerHTML = "";
 		$('#newchanelavatar_load').trigger('click');
 	});
 	$('.my-img, .my-img-btn').on('click', function() {

@@ -97,7 +97,7 @@
 			<br>
 			<input type="submit" id="safe_user_data_changes" value="Сохранить">
 		</div>
-		<div class="error" style = "color: red;"></div> 
+		<div class="error" id="userchangeerror" style = "color: red;"></div> 
 	</form>
 	<a class="logout-link" href="#" onclick="Exit()">Выйти</a>
 </div>
@@ -127,7 +127,7 @@
 			<br>
 			<input type="submit" value="Пригласить" id="adduser">
 		</div>
-		<div class="error" style = "color: red;"></div> 
+		<div class="error" id="new_user_error" style = "color: red;"></div> 
 	</form>
 </div>
 
@@ -135,7 +135,7 @@
 	<form id="leave_channel_form_form" class="leave-channel-form" action="" method="post">
 		<div style="width: calc(100%)">
 			<div style="text-align: center;">Вы уверены?</div>
-			<button class="no">Нет</button>
+			<button class="no" id="chanel_not_leave_button">Нет</button>
 			<button class="yes" id="chanel_leave_button">Да</button>
 
 		</div>
