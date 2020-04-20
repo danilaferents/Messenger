@@ -65,6 +65,7 @@
 	    <div class="form-block"><label for="password">Password <em>*</em></label><input type="password" id="password" placeholder="password" name="password" required></div>
 	  </fieldset>
 	<input type="submit" value="Log in" id="log">
+	<div class="error" style = "color: red;"></div> 
 	</form>
 	<div class="form-change"><p>or <span data-form-id="reg_form">Sign up</span></p></div>
 	<form action="" id="reg_form" style="display:none;" method="post">
@@ -78,8 +79,8 @@
 	    <div class="form-block"><label for="phone">phone</label><input type="phone" id="phone"  name="phone"></div>
 	  </fieldset>
 	<input type="submit" value="Register" id="reg">
+	<div class="error" style = "color: red;"></div> 
 	</form>
-	<div id="error"></div> 
 	<div class="form-change" style="display: none;"><p>or <span data-form-id="login_form">Sign in</span></p></div>
 </div>
 <div id="my-modal">
@@ -96,6 +97,7 @@
 			<br>
 			<input type="submit" id="safe_user_data_changes" value="Сохранить">
 		</div>
+		<div class="error" style = "color: red;"></div> 
 	</form>
 	<a class="logout-link" href="#" onclick="Exit()">Выйти</a>
 </div>
@@ -113,7 +115,9 @@
 			<br>
 			<input type="submit" value="Создать канал" id="createchanel">
 		</div>
+		<div class="error" style = "color: red;"></div> 
 	</form>
+	<div class="error"></div>
 </div>
 
 <div id="new_user_modal">
@@ -123,16 +127,18 @@
 			<br>
 			<input type="submit" value="Пригласить" id="adduser">
 		</div>
+		<div class="error" style = "color: red;"></div> 
 	</form>
 </div>
 
 <div id="leave_channel_modal">
 	<form id="leave_channel_form" class="leave-channel-form" action="" method="post">
 		<div style="width: calc(100%)">
-			<div>Вы уверены?</div>
-			<input type="declay" value="Нет" id="no">
-			<input type="submit" value="Да" id="yes">
+			<div style="text-align: center;">Вы уверены?</div>
+			<button class="no">Нет</button>
+			<button class="yes">Да</button>
 		</div>
+		<div class="error" style = "color: red;"></div> 
 	</form>
 </div>
 

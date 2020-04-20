@@ -7,6 +7,11 @@ $(document).ready(function() {
 			sendAjaxForm('error', 'login_form', 'php/login.php');
 			return false; 
 			}
+			// else {
+			// 		alert('log');
+			// 		$('#log_form').find('.error').html('entered passwords do not match')
+			// 		return false;
+			// }
 		}
 	);
     $("#reg").click(
@@ -20,7 +25,9 @@ $(document).ready(function() {
 				return false;
 			}
 			else {
-                              $('#error').html('entered passwords do not match'); 
+					alert('reg');
+					// $('#reg_form').find('.error').html('entered passwords do not match')
+                              // $('#error').html('entered passwords do not match'); 
 				return false;         
                         }
 		    }
