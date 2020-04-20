@@ -19,8 +19,16 @@ if (!is_user_in_chanel($user, $chanel)){
 }
 
 
-$query = "DETETE FROM chanels_users WHERE chanel=$chanel and user = $user)";
-$conn->query($query);
+$query = "DELETE FROM chanels_users WHERE chanel=$chanel and user = $user";
+if(!$conn->query($query))
+{
+	echo "error";
+    	echo 'Запрос целиком: ' . $query;
+}
+else
+{
+	echo "success";
+}
 ?>
 
 

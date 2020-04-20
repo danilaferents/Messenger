@@ -20,16 +20,16 @@ if (!is_user_in_chanel($user, $chanel)){
 $query = "SELECT id, senderid, text, created, content, chanel FROM messages where chanel = $chanel order by created desc limit 50";
 $time_wait = 0;
 $result = $conn->query($query);
-while ($result->num_rows == 0)
-{
-	usleep(100000);
-	$time_wait += 0.1;
-	$result = $conn->query($query);
-	if ($time_wait > 10)
-	{
-		break;
-	}
-}
+//while ($result->num_rows == 0)
+//{
+//	usleep(100000);
+//	$time_wait += 0.1;
+//	$result = $conn->query($query);
+//	if ($time_wait > 10)
+//	{
+//		break;
+//	}
+//}
 
 
 

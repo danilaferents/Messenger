@@ -4,7 +4,7 @@ $(document).ready(function() {
 		function(e){
 			if (login_form.checkValidity())
 			{
-			sendAjaxForm('error', 'login_form', 'php/login.php');
+			sendAjaxForm('#login_error', 'login_form', 'php/login.php');
 			return false; 
 			}
 			// else {
@@ -21,7 +21,7 @@ $(document).ready(function() {
 		    {
 			if (document.forms["reg_form"].elements["password"].value == document.forms["reg_form"].elements["rep_password"].value){
 
-				sendAjaxForm('error', 'reg_form', 'php/registration.php');
+				sendAjaxForm('#register_error', 'reg_form', 'php/registration.php');
 				return false;
 			}
 			else {
@@ -51,7 +51,7 @@ $(document).ready(function() {
 				return false;
 			}
 	);
-  $("#add_user").click(
+  $("#adduser").click(
 			function(e){
 				if (new_user_form.checkValidity())
 		    		{
@@ -91,11 +91,11 @@ function sendAjaxForm(error_form, ajax_form, url) {
 		}
         	else
 		{
-			$('#error_form').html(result.msg);
+			$(error_form).html(result.msg);
 		}
     	},
     	error: function(response) { 
-            $('#error_form').html('Ошибка. Данные не отправлены.');
+            $(error_form).html('Ошибка. Данные не отправлены.');
     	}
  	});
 }

@@ -65,7 +65,7 @@
 	    <div class="form-block"><label for="password">Password <em>*</em></label><input type="password" id="password" placeholder="password" name="password" required></div>
 	  </fieldset>
 	<input type="submit" value="Log in" id="log">
-	<div class="error" style = "color: red;"></div> 
+	<div class="error" id="login_error" style = "color: red;"></div> 
 	</form>
 	<div class="form-change"><p>or <span data-form-id="reg_form">Sign up</span></p></div>
 	<form action="" id="reg_form" style="display:none;" method="post">
@@ -79,7 +79,7 @@
 	    <div class="form-block"><label for="phone">phone</label><input type="phone" id="phone"  name="phone"></div>
 	  </fieldset>
 	<input type="submit" value="Register" id="reg">
-	<div class="error" style = "color: red;"></div> 
+	<div class="error" id="register_error" style = "color: red;"></div> 
 	</form>
 	<div class="form-change" style="display: none;"><p>or <span data-form-id="login_form">Sign in</span></p></div>
 </div>
@@ -106,7 +106,7 @@
 	<form id="new_chanel_from" class="new-chat-form" action="" method="post">
 		<input type="file" name="avatar" accept="image/*" id="chat_avatar" style="display: none;">
 		<div class="new-chat-img-container">
-			<img class="new-chat-img" src="pics/chanall.jpg">
+			<img class="new-chat-img" src="pics/chanels_avatars/nochanelavatar.jpg">
 			<div class="new-chat-img-btn"><img id="newchanelavatar" src="pics/upload.svg" width="14"></div>
 		</div>
 		<div style="width: calc(100% - 80px)">
@@ -115,7 +115,7 @@
 			<br>
 			<input type="submit" value="Создать канал" id="createchanel">
 		</div>
-		<div class="error" style = "color: red;"></div> 
+		<div class="error" id="chanel_create_error" style = "color: red;"></div> 
 	</form>
 	<div class="error"></div>
 </div>
@@ -134,10 +134,6 @@
 <div id="leave_channel_modal">
 	<form id="leave_channel_form_form" class="leave-channel-form" action="" method="post">
 		<div style="width: calc(100%)">
-
-			<div>Вы уверены?</div>
-			<input type="declay" value="Нет" id="no">
-			<input type="submit" value="Да" id="yes">
 			<div style="text-align: center;">Вы уверены?</div>
 			<button class="no">Нет</button>
 			<button class="yes" id="chanel_leave_button">Да</button>

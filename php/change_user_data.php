@@ -18,11 +18,9 @@ $conn = $pdo->connection();
 
 
 $valid_extensions = array("jpg","jpeg","png");
-$file_name = $_FILES['file']['name'];
 
 $location = "";
 
-$file_name = $_FILES['file']['name'];
 
 
 if ($name == "" and $surname == 0){
@@ -34,7 +32,9 @@ if ($name == "" and $surname == 0){
 }
 
 
-if ($file_name != ""){
+if (isset($_FILES["file"])){
+	//echo $_FILES["file"];
+	$file_name = $_FILES['file']['name'];
 	$location = $_SERVER['DOCUMENT_ROOT'] . "/pics/users_avatars/" . $user . '_' . $file_name;
 	$imageFileType = pathinfo($location, PATHINFO_EXTENSION);
 	if( !in_array(strtolower($imageFileType), $valid_extensions)) {

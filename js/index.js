@@ -269,7 +269,9 @@ function LeaveChanel() {
     var xhttp = new XMLHttpRequest();
     xhttp.onreadystatechange = function() {
     if (this.readyState == 4 && this.status == 200) {
-
+		$('#leave_channel_modal').bPopup().close();
+		CleanChanels();
+		LoadChanels();	
 	}
   };
   xhttp.open("GET", "php/leave_chanel.php?id="+user + "&ch=" + act_chanel, true);
@@ -337,11 +339,12 @@ function ShowMessages(arr){
 
 
 function CreateChanel(){
+  document.getElementById("chanel_create_error").innerHTML = "";
   var str = document.getElementById("chanelname").value;
   if (str=="")
   {
 	console.log("empty chanel name");
-	//document.getElementById("chanelcreateerror").innerHTML = "Need to enter chanel name";
+	document.getElementById("chanel_create_error").innerHTML = "Need to enter chanel name";
 	return;
   }
 
@@ -360,7 +363,7 @@ function CreateChanel(){
   fd.append('id', user);
   fd.append('chanelname', str);
   //console.log(str);
-  document.getElementsByClassName("error").innerHTML = "Creating Channel....";
+  document.getElementById("chanel_create_error").innerHTML = "Creating Channel....";
 	$.ajax({
 	url:      "php/create_chanel.php",
 	type:     "POST", 
@@ -375,12 +378,12 @@ function CreateChanel(){
 		}
         	else
 		{
-			  document.getElementsByClassName("error").innerHTML = "Creating Channel....";
+			  document.getElementById("chanel_create_error").innerHTML = "This channel's name is already taken";
 		}
 
 	},
 	error: function() {
-		document.getElementsByClassName("error").innerHTML = "Check your Internet Connection";
+		document.getElementById("chanel_create_error").innerHTML = "Check your Internet Connection";
 	}
 	});
 }
@@ -402,14 +405,8 @@ function ChangeUserData(){
 	return;
   }
   var fd = new FormData();
-  if ($('#avatar_load')[0] != undefined){
-  	var files = $('#avatar_load')[0].files[0];
-  }
-  else
-  {
-	console.log("empty chanel avatar");
-	var files = "";
-  }
+  var files = $('#avatar_load')[0].files[0];
+
   fd.append('file',files);
   fd.append('id', user);
   fd.append('name', name);
@@ -427,10 +424,13 @@ function ChangeUserData(){
 		{
 			user_name = name;
 			user_surname = surname;
-			avatar = result.avatar;
-     			if (avatar == undefined){
-				avatar = "pics/users_avatars/noavatar.jpg";
-     			}
+			if (result.avatar != "")
+			{
+				avatar = result.avatar;
+				if (avatar == undefined){
+					avatar = "pics/users_avatars/noavatar.jpg";
+				}
+			}
 			users_info[user] = {};
 			users_info[user].avatar = avatar;
 			users_info[user].name = user_name;
