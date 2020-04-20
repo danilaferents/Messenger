@@ -62,7 +62,7 @@ $query = "SELECT * FROM users WHERE email='$email'";
 $result = $conn->query($query);
 
 if ($result->num_rows>0){
-	$result = array(
+	$result_ar = array(
     	'status' => "NOT OK",
     	'url' => "",
 	'id' => "",
@@ -76,10 +76,13 @@ else {
     $result = $conn->query($query2);
     $id_user = $result->fetch_array(MYSQLI_ASSOC);
     $_SESSION['password']=$password; 
-    $_SESSION['email']=$email; 
-    $_SESSION['id']=$id_user['id'];
+    $_SESSION['email']=$email;
+    $id = $id_user['id'];
+    $_SESSION['id'] = $id;
     session_write_close();
-    $result = array(
+    $query3 = "INSERT INTO chanels_users (chanel, user) VALUES (1, $id)";
+    $conn->query($query3);
+    $result_ar = array(
     	'status' => "OK",
     	'url' => "messanges.html",
 	'id' => $id_user['id'],
@@ -87,9 +90,8 @@ else {
     ); 
 }
 
- $query3 = "INSERT INTO chanels_users (chanel, user) VALUES (1, $id_user['id'])" ;
- $conn->query($query3);
- echo json_encode($result);
+
+echo json_encode($result_ar);
           
 
 //echo "<meta http-equiv='Refresh' content='0; URL=index.php'>";

@@ -339,7 +339,6 @@ function ShowMessages(arr){
 
 
 function CreateChanel(){
-  document.getElementById("chanel_create_error").innerHTML = "";
   var str = document.getElementById("chanelname").value;
   if (str=="")
   {

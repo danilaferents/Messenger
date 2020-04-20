@@ -80,6 +80,7 @@ $(document).ready(function() {
 		}, 300);
 	});
 	$('.header-profile .profile-name').on('click', function() {
+		document.getElementById("userchangeerror").innerHTML = "";
 		my_modal.bPopup();
 	});
 	$('.my-name').keyup(function(event){
@@ -97,9 +98,11 @@ $(document).ready(function() {
 		leave_channel_modal.bPopup();
 	});
 	$('.add-user-to-chat-btn').on('click', function() {
+		document.getElementById("new_user_modal").getElementsByClassName('error')[0].innerHTML = "";
 		new_user_modal.bPopup();
 	});
 	$('.new-chat-img, .new-chat-img-btn').on('click', function() {
+		document.getElementById("chanel_create_error").innerHTML = "";
 		$('#newchanelavatar_load').trigger('click');
 	});
 	$('.my-img, .my-img-btn').on('click', function() {

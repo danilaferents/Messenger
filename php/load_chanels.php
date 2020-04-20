@@ -28,8 +28,8 @@ if ($syn == "")
 	$result = $conn->query($query);
 	while ($result->num_rows == 0)
 	{
-		usleep(100000);
-		$time_wait += 0.1;
+		usleep(300000);
+		$time_wait += 0.3;
 		$result = $conn->query($query);
 		if ($time_wait > 10)
 		{
@@ -39,13 +39,13 @@ if ($syn == "")
 }
 else
 {
-	$query = $query = "SELECT id, chanelavatar, chanelname, created FROM chanels where created > '$syn' and id in (select chanel from chanels_users where user = $user)order by created desc";
+	$query = "SELECT id, chanelavatar, chanelname, created FROM chanels where created > '$syn' and id in (select chanel from chanels_users where user = $user)order by created desc";
 	$time_wait = 0;
 	$result = $conn->query($query);
 	while ($result->num_rows == 0)
 	{
-		usleep(100000);
-		$time_wait += 0.1;
+		usleep(300000);
+		$time_wait += 0.3;
 		$result = $conn->query($query);
 		if ($time_wait > 10)
 		{
