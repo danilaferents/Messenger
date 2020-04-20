@@ -233,12 +233,15 @@ main {
 .leave-chat-btn {
 	width: auto;
 	height: 40px;
-	background-color: #8B0000;
+	background-color: #AD0000;
 	font-size: 20px;
 	border: none;
 	border-radius: 5px;
 	cursor: pointer;
 	transition: .3s;
+}
+.leave-chat-btn:hover {
+	background-color: #8B0000;
 }
 .add-user-to-chat-btn {
 	width: auto;
@@ -249,6 +252,9 @@ main {
 	border-radius: 5px;
 	cursor: pointer;
 	transition: .3s;
+}
+.add-user-to-chat-btn:hover {
+	background-color: #FF6600;
 }
 .all-messages {
 	width: 100%;
@@ -509,7 +515,7 @@ footer {
 	text-decoration: underline;
 }
 
-#my-modal, #new-chat-modal {
+#my-modal, #new-chat-modal, #new_user_modal, #leave_channel_modal {
 	display: none;
 	width: 100%;
 	max-width: 400px;
@@ -579,7 +585,7 @@ footer {
 	background-color: #249D06;
 }
 
-.new-chat-form, .my-form {
+.new-chat-form, .my-form, .new-user-form, .leave-channel-form {
 	background-color: #5682a3;
 	display: -webkit-flex;
 	display: -moz-flex;
@@ -595,7 +601,7 @@ footer {
 	padding: 5px 10px;	
 }
 
-#new-chat-modal input[type="text"], #my-modal input[type="text"] {
+#new-chat-modal input[type="text"], #my-modal input[type="text"], #new_user_modal input[type="text"] {
 	font-size: 16px;
 	border: none;
 	outline: none;
@@ -604,11 +610,22 @@ footer {
 	padding: 2px 5px;
 }
 
-#new-chat-modal input[type="text"]::placeholder, #my-modal input[type="text"]::placeholder {
+#new-chat-modal input[type="text"]::placeholder, #my-modal input[type="text"]::placeholder, #new_user_modal input[type="text"]::placeholder {
 	color: #ddd;
 }
 
-#new-chat-modal input[type="submit"], #my-modal input[type="submit"] {
+ #leave_channel_modal input[type="declay"] {
+ 	background-color: #FF0000;
+	border: none;
+	font-size: 14px;
+	padding: 2px 5px;
+	margin-top: 5px;
+	float: left;
+	border-radius: 5px;
+	cursor: pointer;
+ }
+
+#new-chat-modal input[type="submit"], #my-modal input[type="submit"], #new_user_modal input[type="submit"], #leave_channel_modal input[type="submit"] {
 	background-color: #249D06;
 	border: none;
 	font-size: 14px;
