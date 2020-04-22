@@ -242,6 +242,16 @@ main {
 	cursor: pointer;
 	transition: .3s;
 }
+#people_list {
+	width: auto;
+	height: 40px;
+	background-color: rgba(0,0,0,0);
+	font-size: 16px;
+	border: none;
+	border-radius: 5px;
+	cursor: pointer;
+	transition: .3s;
+}
 .leave-chat-btn:hover {
 	text-decoration: underline;
 }
