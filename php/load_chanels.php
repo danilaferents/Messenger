@@ -66,7 +66,7 @@ while($row = $result->fetch_assoc()) {
         $myArray[] = $row;
     }
 
-echo json_encode($myArray)
+echo json_encode($myArray);
 
 
 ?>

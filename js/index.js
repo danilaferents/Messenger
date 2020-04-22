@@ -6,6 +6,7 @@ var user_name = "";
 var phone = "";
 var avatar = "";
 var last_syn = "";
+var last_chanel_syn = "";
 var user_surname = "";
 var exit_time = "";
 
@@ -81,6 +82,7 @@ function StartRenovating(){
 		answer = JSON.parse(this.responseText);
 		if (answer.hasOwnProperty('time')){
 			last_syn = answer["time"];
+			last_chanel_syn = answer["time"];
 		}
 		RenovateMessages(true);
 		ChanelRenovate(true);
@@ -461,7 +463,7 @@ function ChangeUserData(){
 
 
 function ChanelRenovate(renovate_again){
-    if (last_syn == "")
+    if (last_chanel_syn == "")
     {
 	setTimeout(ChanelRenovate, 100, true);
 	return;
@@ -475,7 +477,7 @@ function ChanelRenovate(renovate_again){
 		arr = JSON.parse(this.responseText);
 		if (arr.length > 0)
 		{
-			SetLastSynTime(arr[0]);
+			SetLastChanelSynTime(arr[0]);
 			ShowChanels(arr);
 			//Array.from(arr).forEach((element) => LoadMessages(element['id']));
 		}
@@ -485,7 +487,7 @@ function ChanelRenovate(renovate_again){
 		}
 	}
   };
-  xhttp.open("GET", "php/load_chanels.php?syn="+last_syn+"&id="+user, true);
+  xhttp.open("GET", "php/load_chanels.php?syn="+last_chanel_syn+"&id="+user, true);
   xhttp.send();
 }
 
@@ -500,6 +502,10 @@ function ShowChanels(arr){
 function SetLastSynTime(mes){
 	last_syn = mes.created;
 	//window.alert(last_syn);
+}
+
+function SetLastChanelSynTime(mes){
+	last_chanel_syn = mes.created;
 }
 
 function MakeMessage(id, text, date)
@@ -627,6 +633,18 @@ function RenovateUsersData(recursive){
 	}	
 }
 
+
+function ShowPeopleList(){
+ 	  var act_chanel = document.getElementsByClassName("chat active")[0].id;
+	  var xhttp = new XMLHttpRequest();
+	  xhttp.onreadystatechange = function() {
+	    if (this.readyState == 4 && this.status == 200) {
+	          window.alert(this.responseText);
+	    }
+	  };
+	  xhttp.open("GET", "php/chanel_info.php?ch="+act_chanel+"&id="+user, true);
+	  xhttp.send();	
+}
 
 function SendMessage() {
 	document.getElementsByClassName("send-button-parent")[0].children[0].style.width = "70%";
