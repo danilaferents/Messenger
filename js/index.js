@@ -251,9 +251,9 @@ function RenovateMessages(renovate_again) {
 		arr = JSON.parse(this.responseText);
 		if (arr.length > 0)
 		{
+			SetLastSynTime(arr[0]);
 			UpdateMessages(arr.reverse());
 			//ShowNewMessages(all_messages[chanel]);
-			SetLastSynTime(arr[0]);
 		}
 		if (renovate_again)
 		{
@@ -494,7 +494,9 @@ function ChanelRenovate(renovate_again){
 
 function ShowChanels(arr){
 	for (let i = arr.length - 1; i > -1; i--) {
-        	MakeChanel(arr[i].id, "no data", "no data", "no data", arr[i].chanelavatar, arr[i].chanelname); 
+        	MakeChanel(arr[i].id, "no messages", "", "", arr[i].chanelavatar, arr[i].chanelname); 
+		//console.log(all_messages);
+		//console.log(arr[i].id);
         }
 }
 
@@ -546,11 +548,22 @@ function UpdateMessage(name, avatar, id){
 
 function RenovateChanelInfo(info_obj)
 {
-	//console.log(info_obj);
-	text =info_obj.text;
-	sender = info_obj.sender + ": ";
-	created = info_obj.created;	
+	if (info_obj === undefined){return;}
 	var active_chanel = document.getElementById(info_obj.chanel);
+	if (active_chanel === null)
+	{return;}
+	if (info_obj.created == "no data")
+	{
+		var sender = "no messages";
+		var created ="";
+		var text = "";
+	}
+	else
+	{
+		var sender = info_obj.sender + ": ";
+		var created = info_obj.created;
+		var text =info_obj.text;
+	}	
 	active_chanel.getElementsByClassName("chat-last-msg-text")[0].innerHTML = text;
 	active_chanel.getElementsByClassName("chat-date")[0].firstElementChild.innerHTML = created;	
 	LoadUserData_callback_for_chanel_sender(info_obj.chanel, info_obj.senderid, UpdateChanel_last_sender);
@@ -611,9 +624,12 @@ function MakeChanel(id, lastsender, lasttext, lasttime, chanelavatar, chanelname
    }
    var chat_logo = $('<div/>').addClass("chat-logo").append($('<img/>', { src: chanelavatar }));	
    var chat_text = $('<div/>').addClass("chat-text").append($('<div/>').addClass("chat-name").text(chanelname));
+   var last_sender_text = lastsender;
+   if (last_sender_text != "no messages")
+	{last_sender_text += ": "}
    var chat_last_message = $('<div/>')
     	.addClass("chat-last-msg").append($('<span/>').addClass("chat-last-msg-dude")
-		.text(lastsender + ": ")).append($('<span/>').addClass("chat-last-msg-text").text(lasttext));
+		.text(last_sender_text)).append($('<span/>').addClass("chat-last-msg-text").text(lasttext));
    chat_text.append(chat_last_message)
    var date = $('<div/>').addClass("chat-date").append($('<p/>').text(lasttime));
    var result = $('<div/>')
@@ -621,6 +637,11 @@ function MakeChanel(id, lastsender, lasttext, lasttime, chanelavatar, chanelname
    result.prop('id', id);
    result.click(function(){PickChanel(this);});
    $('#chats').append(result);
+   if (all_messages.hasOwnProperty(id)) 
+   {
+	//console.log(all_messages[id]);
+	RenovateChanelInfo(all_messages[id][all_messages[id].length-1]);
+   }
 }
 
 
